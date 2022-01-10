@@ -201,59 +201,63 @@ class PriceChartStatus {
         this.bindViewAllInformation();
 
         let self = this;
-        queryUrlGetAjax(
-            /* urlToGet= */
-            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=zilswap&dex_base_token_symbol=zil&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
-            /* successCallback= */
-            function (data) {
-                try {
-                    if ('ticker' in data && 'range' in data) {
-                        if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
-                            self.historicalPriceData_['zilswap'] = data;
-                            self.bindViewAllInformation();
-                            self.bindViewPriceChart( /* isForceRedraw= */ false);
-                            onSuccessCallback();
-                            return;
-                        }
-                    }
-                } catch {
-                    // Do nothing
-                }
-                self.bindViewAllInformation();
-                onErrorCallback();
-            },
-            /* errorCallback= */
-            function () {
-                self.bindViewAllInformation();
-                onErrorCallback();
-            });
 
-        queryUrlGetAjax(
-            /* urlToGet= */
-            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=xcad&dex_base_token_symbol=xcad&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
-            /* successCallback= */
-            function (data) {
-                try {
-                    if ('ticker' in data && 'range' in data) {
-                        if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
-                            self.historicalPriceData_['xcaddex'] = data;
-                            self.bindViewAllInformation();
-                            self.bindViewPriceChart( /* isForceRedraw= */ false);
-                            onSuccessCallback();
-                            return;
+        // TODO: This is a hack for dXCAD. Fix this.
+        if (this.historicalPriceData_.ticker !== 'dXCAD') {
+            queryUrlGetAjax(
+                /* urlToGet= */
+                CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=zilswap&dex_base_token_symbol=zil&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
+                /* successCallback= */
+                function (data) {
+                    try {
+                        if ('ticker' in data && 'range' in data) {
+                            if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
+                                self.historicalPriceData_['zilswap'] = data;
+                                self.bindViewAllInformation();
+                                self.bindViewPriceChart( /* isForceRedraw= */ false);
+                                onSuccessCallback();
+                                return;
+                            }
                         }
+                    } catch {
+                        // Do nothing
                     }
-                } catch {
-                    // Do nothing
-                }
-                self.bindViewAllInformation();
-                onErrorCallback();
-            },
-            /* errorCallback= */
-            function () {
-                self.bindViewAllInformation();
-                onErrorCallback();
-            });
+                    self.bindViewAllInformation();
+                    onErrorCallback();
+                },
+                /* errorCallback= */
+                function () {
+                    self.bindViewAllInformation();
+                    onErrorCallback();
+                });
+        } else {
+            queryUrlGetAjax(
+                /* urlToGet= */
+                CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=xcad&dex_base_token_symbol=xcad&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
+                /* successCallback= */
+                function (data) {
+                    try {
+                        if ('ticker' in data && 'range' in data) {
+                            if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
+                                self.historicalPriceData_['xcaddex'] = data;
+                                self.bindViewAllInformation();
+                                self.bindViewPriceChart( /* isForceRedraw= */ false);
+                                onSuccessCallback();
+                                return;
+                            }
+                        }
+                    } catch {
+                        // Do nothing
+                    }
+                    self.bindViewAllInformation();
+                    onErrorCallback();
+                },
+                /* errorCallback= */
+                function () {
+                    self.bindViewAllInformation();
+                    onErrorCallback();
+                });
+        }
     }
 
     getMainDexName(ticker) {
