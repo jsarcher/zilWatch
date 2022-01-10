@@ -37,10 +37,26 @@ class SimpleChartStatus {
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/24h_simple_all_tokens?requester=zilwatch_dashboard",
+            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/24h_simple_all_tokens?dex_name=zilswap&dex_base_token_symbol=zil&requester=zilwatch_dashboard",
             /* successCallback= */
             function (data) {
                 self.simpleAllTokensData_ = data;
+                self.bindViewAllTokens();
+            },
+            /* errorCallback= */
+            function () {});
+
+        // TODO: This is a hack for dXCAD. Fix this.
+        queryUrlGetAjax(
+            /* urlToGet= */
+            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/24h_simple_all_tokens?dex_name=xcad&dex_base_token_symbol=xcad&requester=zilwatch_dashboard",
+            /* successCallback= */
+            function (data) {
+                try {
+                    self.simpleAllTokensData_.data.dXCAD = data.data.dXCAD;
+                } catch (err) {
+                    console.log('dXCAD doesnt exist! ' + err.message);
+                }
                 self.bindViewAllTokens();
             },
             /* errorCallback= */

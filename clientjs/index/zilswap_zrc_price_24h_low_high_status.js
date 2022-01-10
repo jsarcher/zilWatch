@@ -1,7 +1,19 @@
 /** A class to represent Zilswap Zrc token price 24h low and high.  */
 class ZilswapZrcPrice24hLowHighStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ zilswapDexStatus, /* nullable= */ zrcTokenPrice24hLowData, /* nullable= */ zrcTokenPrice24hHighData) {
+    constructor(
+        zrcTokenPropertiesListMap,
+        /* nullable= */
+        zilswapDexStatus,
+        /* nullable= */
+        zrcTokenPrice24hLowData,
+        /* nullable= */
+        zrcTokenPrice24hHighData,
+        /* nullable= */
+        xcadDexZrcTokenPriceInXcad24hLowData,
+        /* nullable= */
+        xcadDexZrcTokenPriceInXcad24hHighData) {
+
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.zilswapDexStatus_ = zilswapDexStatus;
@@ -10,10 +22,18 @@ class ZilswapZrcPrice24hLowHighStatus {
         this.zrcTokenPrice24hLowMap_ = {};
         if (zrcTokenPrice24hLowData) {
             this.zrcTokenPrice24hLowMap_ = zrcTokenPrice24hLowData;
+            // TODO: This is a hack for dXCAD. Fix this.
+            if (xcadDexZrcTokenPriceInXcad24hLowData) {
+                this.zrcTokenPrice24hLowMap_.dXCAD = xcadDexZrcTokenPriceInXcad24hLowData.dXCAD
+            }
         }
         this.zrcTokenPrice24hHighMap_ = {};
         if (zrcTokenPrice24hHighData) {
             this.zrcTokenPrice24hHighMap_ = zrcTokenPrice24hHighData;
+            // TODO: This is a hack for dXCAD. Fix this.
+            if (xcadDexZrcTokenPriceInXcad24hHighData) {
+                this.zrcTokenPrice24hHighMap_.dXCAD = xcadDexZrcTokenPriceInXcad24hHighData.dXCAD
+            }
         }
 
         this.bindViewZrcPrice24hLowHigh();
@@ -28,13 +48,22 @@ class ZilswapZrcPrice24hLowHighStatus {
 
     bindViewZrcPrice24hLowHigh() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            // TODO: Remove manual guarding of dXCAD
-            if (ticker === 'dXCAD') {
-                continue;
-            }
-
             let zrcPrice24hLow = parseFloat(this.zrcTokenPrice24hLowMap_[ticker]);
             let zrcPrice24hHigh = parseFloat(this.zrcTokenPrice24hHighMap_[ticker]);
+
+            // TODO: This is a hack for dXCAD. Fix this.
+            if (ticker === 'dXCAD') {
+                if (!this.zilswapDexStatus_) {
+                    continue;
+                }
+                let xcadPriceInZil = this.zilswapDexStatus_.getZrcPriceInZil('XCAD');
+                if (!xcadPriceInZil) {
+                    continue;
+                }
+                zrcPrice24hLow *= xcadPriceInZil;
+                zrcPrice24hHigh *= xcadPriceInZil;
+            }
+
             if (zrcPrice24hLow && zrcPrice24hHigh) {
                 // Set 24h low text
                 let zrcTokenPrice24hLowString = commafyNumberToString(zrcPrice24hLow, /* decimals= */ 2);
@@ -76,7 +105,7 @@ class ZilswapZrcPrice24hLowHighStatus {
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/lowhigh?range=24h&requester=zilwatch_dashboard",
+            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/lowhigh?dex_name=zilswap&dex_base_token_symbol=zil&range=24h&requester=zilwatch_dashboard",
             /* successCallback= */
             function (data) {
                 let currZrcTokenPrice24hLowData = data['low'];
@@ -86,6 +115,28 @@ class ZilswapZrcPrice24hLowHighStatus {
                 let currZrcTokenPrice24hHighData = data['high'];
                 if (currZrcTokenPrice24hHighData) {
                     self.zrcTokenPrice24hHighMap_ = currZrcTokenPrice24hHighData;
+                }
+                self.bindViewZrcPrice24hLowHigh();
+                onSuccessCallback();
+            },
+            /* errorCallback= */
+            function () {
+                onErrorCallback();
+            });
+
+        // TODO: This is a hack for dXCAD. Fix this.
+        queryUrlGetAjax(
+            /* urlToGet= */
+            CONST_ZILWATCH_ROOT_URL + "/api/tokenprice/lowhigh?dex_name=xcad&dex_base_token_symbol=xcad&range=24h&requester=zilwatch_dashboard",
+            /* successCallback= */
+            function (data) {
+                let currZrcTokenPrice24hLowData = data['low'];
+                if (currZrcTokenPrice24hLowData) {
+                    self.zrcTokenPrice24hLowMap_.dXCAD = currZrcTokenPrice24hLowData.dXCAD;
+                }
+                let currZrcTokenPrice24hHighData = data['high'];
+                if (currZrcTokenPrice24hHighData) {
+                    self.zrcTokenPrice24hHighMap_.dXCAD = currZrcTokenPrice24hHighData.dXCAD;
                 }
                 self.bindViewZrcPrice24hLowHigh();
                 onSuccessCallback();

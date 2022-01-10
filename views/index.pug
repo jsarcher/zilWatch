@@ -504,8 +504,8 @@ block content
 
               div(class='col-xl-4 my-2')
                 div(class='text-xl-right')
-                  span(id='price_chart_current_token_price_zil' class='h3 font-weight-bold')='-'
-                  span(class='h5 font-weight-bold ml-2')='ZIL'
+                  span(id='price_chart_current_token_price_in_base_token' class='h3 font-weight-bold')='-'
+                  span(id='price_chart_current_token_price_ticker' class='h5 font-weight-bold ml-2')='ZIL'
 
                   span(id='price_chart_current_percent_change_container' class='h6 text-secondary ml-3')
                     span(id='price_chart_current_percent_change')='0.0'
@@ -517,8 +517,10 @@ block content
 
                   span(id='price_chart_xcaddex_current_token_price_zil_container' class='h6 text-secondary' style='display: none;')
                     br
+                    span(id='price_chart_xcaddex_current_token_price_xcad')='-'
+                    span= ' XCAD (~'
                     span(id='price_chart_xcaddex_current_token_price_zil')='-'
-                    span= ' ZIL (via XCAD dex)'
+                    span= ' ZIL)'
 
                   div
                     div(class='progress' style='height: 0.6rem; margin-top: 0.2rem;')
@@ -527,14 +529,14 @@ block content
                       span(class='price_chart_range mr-1')
                       span(class=' mr-1')= 'low: '
                       span(id='price_chart_range_low' class='font-weight-bold')='-'
-                      span(class=' ml-1')= 'ZIL'
+                      span(id='price_chart_range_low_ticker' class=' ml-1')= 'ZIL'
 
                       span(class='ml-2 mr-2')='/'
 
                       span(class='price_chart_range mr-1')
                       span(class=' mr-1')= 'high: '
                       span(id='price_chart_range_high' class='font-weight-bold')='-'
-                      span(class=' ml-1')= 'ZIL'
+                      span(id='price_chart_range_high_ticker' class=' ml-1')= 'ZIL'
 
             div(class='row')
               div(class='col-6 col-xl-3 my-2')
@@ -586,17 +588,31 @@ block content
 
               div(class='col-6 col-xl-3 my-2')
                 p(class='h6')='All time high'
-                span(id='price_chart_all_time_high' class='h5 font-weight-bold')='-'
-                span(class='ml-1')= 'ZIL'
-                br
-                span(id='price_chart_all_time_high_timestamp' class='h6')
+
+                div(id='price_chart_zilswap_all_time_high_container' class='mb-2' style='display: none;')
+                  span(id='price_chart_zilswap_all_time_high' class='h5 font-weight-bold')='-'
+                  span(class='ml-1')= 'ZIL'
+                  br
+                  span(id='price_chart_zilswap_all_time_high_timestamp' class='h6')
+                div(id='price_chart_xcaddex_all_time_high_container' class='mb-2' style='display: none;')
+                  span(id='price_chart_xcaddex_all_time_high' class='h5 font-weight-bold')='-'
+                  span(class='ml-1')= 'XCAD'
+                  br
+                  span(id='price_chart_xcaddex_all_time_high_timestamp' class='h6')
 
               div(class='col-6 col-xl-3 my-2')
                 p(class='h6')='All time low'
-                span(id='price_chart_all_time_low' class='h5 font-weight-bold')='-'
-                span(class='ml-1')= 'ZIL'
-                br
-                span(id='price_chart_all_time_low_timestamp' class='h6')
+                
+                div(id='price_chart_zilswap_all_time_low_container' class='mb-2' style='display: none;')
+                  span(id='price_chart_zilswap_all_time_low' class='h5 font-weight-bold')='-'
+                  span(class='ml-1')= 'ZIL'
+                  br
+                  span(id='price_chart_zilswap_all_time_low_timestamp' class='h6')
+                div(id='price_chart_xcaddex_all_time_low_container' class='mb-2' style='display: none;')
+                  span(id='price_chart_xcaddex_all_time_low' class='h5 font-weight-bold')='-'
+                  span(class='ml-1')= 'XCAD'
+                  br
+                  span(id='price_chart_xcaddex_all_time_low_timestamp' class='h6')
 
             div(class='row mb-2')
 
@@ -1487,6 +1503,9 @@ block script
     var xcadDexDistributorToTickerMapData = !{JSON.stringify(xcadDexDistributorToTickerMap)};
     var xcadDexRewardData = !{JSON.stringify(xcadDexReward)};
 
+    var xcadDexZrcTokenPriceInXcad24hLowData = !{JSON.stringify(xcadDexZrcTokenPriceInXcad24hLow)};
+    var xcadDexZrcTokenPriceInXcad24hHighData = !{JSON.stringify(xcadDexZrcTokenPriceInXcad24hHigh)};
+
     const barChartDrawer = new BarChartDrawer();
     const simpleChartStatus = new SimpleChartStatus(zrcTokenPropertiesListMap, /* simpleAllTokensData= */ null);
 
@@ -1500,7 +1519,7 @@ block script
     const netWorthStatus = new NetWorthStatus(barChartDrawer, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);
 
     const coinMarketStatus = new CoinMarketStatus(coinMap, coinPriceStatus, coinMarketCoingeckoData);
-    const zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData);
+    const zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData, xcadDexZrcTokenPriceInXcad24hLowData, xcadDexZrcTokenPriceInXcad24hHighData);
 
     const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDex24hTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, xcadDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);

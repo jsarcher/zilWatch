@@ -35,6 +35,8 @@ router.get('/', function (req, res, next) {
       "xcad_dex_smart_contract_state_24h_ago", // 20
       "xcad_dex_distributor_to_ticker_map", // 21
       "xcad_dex_reward_and_apr", // 22
+      "xcad_dex_zrc_tokens_price_in_xcad_24h_low", // 23
+      "xcad_dex_zrc_tokens_price_in_xcad_24h_high", // 24
     ],
     function (err, reply) {
       let currZilswapDexSmartContractStateTimestampSeconds = null; // 0
@@ -67,6 +69,8 @@ router.get('/', function (req, res, next) {
 
       let currXcadDexDistributorToTickerMap = null; // 21
       let currXcadDexReward = null; // 22
+      let currXcadDexZrcTokenPriceInXcad24hLow = null; // 23
+      let currXcadDexZrcTokenPriceInXcad24hHigh = null; // 24
 
       let currentDate = new Date();
       let currentTimeSeconds = currentDate.getTime() / 1000;
@@ -156,6 +160,12 @@ router.get('/', function (req, res, next) {
           if (reply[22]) {
             currXcadDexReward = JSON.parse(reply[22]);
           }
+          if (reply[23]) {
+            currXcadDexZrcTokenPriceInXcad24hLow = JSON.parse(reply[23]);
+          }
+          if (reply[24]) {
+            currXcadDexZrcTokenPriceInXcad24hHigh = JSON.parse(reply[24]);
+          }
 
         } catch (ex) {
           console.log(ex);
@@ -190,6 +200,8 @@ router.get('/', function (req, res, next) {
         xcadDexSmartContractState24hAgo: currXcadDexSmartContractState24hAgo,
         xcadDexDistributorToTickerMap: currXcadDexDistributorToTickerMap,
         xcadDexReward: currXcadDexReward,
+        xcadDexZrcTokenPriceInXcad24hLow: currXcadDexZrcTokenPriceInXcad24hLow,
+        xcadDexZrcTokenPriceInXcad24hHigh: currXcadDexZrcTokenPriceInXcad24hHigh,
       });
     });
 });

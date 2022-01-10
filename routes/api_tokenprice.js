@@ -9,14 +9,18 @@ var router = express.Router();
 router.get('/lowhigh', function (req, res, next) {
   visitor.pageview("/api/tokenprice" + req.url, "https://zilwatch.io", "Token Price API").send();
 
+  let dexName = req.query.dex_name;
+  let dexBaseTokenSymbol = req.query.dex_base_token_symbol;
   let queryRange = req.query.range;
-  if (!queryRange) {
+  if (!dexName || !dexBaseTokenSymbol || !queryRange) {
     res.send("Unsupported query parameters!");
     return;
   }
+  dexName = dexName.toLowerCase();
+  dexBaseTokenSymbol = dexBaseTokenSymbol.toLowerCase();
 
-  let redis_key_low = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_low";
-  let redis_key_high = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_high";
+  let redis_key_low = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_" + queryRange + "_low";
+  let redis_key_high = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_" + queryRange + "_high";
 
   redisClient.mget(
     [
@@ -56,18 +60,23 @@ router.get('/lowhigh', function (req, res, next) {
 router.get('/', function (req, res, next) {
   visitor.pageview("/api/tokenprice" + req.url, "https://zilwatch.io", "Token Price API").send();
 
+  let dexName = req.query.dex_name;
+  let dexBaseTokenSymbol = req.query.dex_base_token_symbol;
   let tokenSymbol = req.query.token_symbol;
   let queryRange = req.query.range;
-  if (!tokenSymbol || !queryRange) {
+  if (!dexName || !dexBaseTokenSymbol || !tokenSymbol || !queryRange) {
     res.send("Unsupported query parameters!");
     return;
   }
-  let redis_key = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_" + tokenSymbol;
-  let redis_key_low = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_low";
-  let redis_key_high = "zilswap_dex_zrc_tokens_price_in_zil_" + queryRange + "_high";
-  let redis_key_atl = "zilswap_dex_zrc_tokens_price_in_zil_all_time_low";
-  let redis_key_ath = "zilswap_dex_zrc_tokens_price_in_zil_all_time_high";
-  let redis_key_zilswap_dex_zrc_tokens_price_in_zil = "zilswap_dex_zrc_tokens_price_in_zil";
+  dexName = dexName.toLowerCase();
+  dexBaseTokenSymbol = dexBaseTokenSymbol.toLowerCase();
+
+  let redis_key = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_" + queryRange + "_" + tokenSymbol;
+  let redis_key_low = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_" + queryRange + "_low";
+  let redis_key_high = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_" + queryRange + "_high";
+  let redis_key_atl = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_all_time_low";
+  let redis_key_ath = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_all_time_high";
+  let redis_key_zilswap_dex_zrc_tokens_price_in_zil = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol;
 
   redisClient.mget(
     [redis_key,
@@ -132,7 +141,7 @@ router.get('/', function (req, res, next) {
         }
       }
       if (!data_arr) {
-        console.log("Data not available: %s: %s", tokenSymbol, queryRange);
+        console.log("[%s] Price chart data not available: %s: %s: %s", tokenSymbol, dexName, dexBaseTokenSymbol, queryRange);
         res.send("Data not available!");
         return;
       }
@@ -155,7 +164,16 @@ router.get('/', function (req, res, next) {
 router.get('/24h_simple_all_tokens', function (req, res, next) {
   visitor.pageview("/api/tokenprice" + req.url, "https://zilwatch.io", "Token Price API").send();
 
-  let redis_key_zilswap_dex_zrc_tokens_price_in_zil = "zilswap_dex_zrc_tokens_price_in_zil";
+  let dexName = req.query.dex_name;
+  let dexBaseTokenSymbol = req.query.dex_base_token_symbol;
+  if (!dexName || !dexBaseTokenSymbol) {
+    res.send("Unsupported query parameters!");
+    return;
+  }
+  dexName = dexName.toLowerCase();
+  dexBaseTokenSymbol = dexBaseTokenSymbol.toLowerCase();
+
+  let redis_key_zilswap_dex_zrc_tokens_price_in_zil = dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol;
 
   // First entry is the current (latest) ZRC token price
   let redis_key_arr = [redis_key_zilswap_dex_zrc_tokens_price_in_zil];
@@ -164,7 +182,7 @@ router.get('/24h_simple_all_tokens', function (req, res, next) {
 
   for (let ticker in constants.zrcTokenPropertiesListMap) {
     ticker_to_index_map[ticker] = next_idx;
-    redis_key_arr.push("zilswap_dex_zrc_tokens_price_in_zil_24h_simple_" + ticker);
+    redis_key_arr.push(dexName + "_dex_zrc_tokens_price_in_" + dexBaseTokenSymbol + "_24h_simple_" + ticker);
     next_idx++;
   }
 
@@ -208,6 +226,7 @@ router.get('/24h_simple_all_tokens', function (req, res, next) {
         }
       }
       if (result_ticker_to_data_map.length <= 0) {
+        console.log("Simple token price data not available: %s: %s", dexName, dexBaseTokenSymbol);
         res.send("Data not available!");
         return;
       }
