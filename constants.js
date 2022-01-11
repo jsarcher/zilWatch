@@ -386,6 +386,16 @@ const zrcTokenPropertiesListMap = {
     "website": "https://zilads.github.io/",
     "telegram": "https://t.me/ziladschat",
   },
+  'ATHLETE': {
+    "ticker": "ATHLETE",
+    "name": "Athlete",
+    "address": "zil1ky37vhhdfuupqu0f40h7gqvfltw4u5f2hn4r0n",
+    "address_base16": "0xB123E65eeD4F381071E9ABefE40189fAdd5e512A",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1ky37vhhdfuupqu0f40h7gqvfltw4u5f2hn4r0n/logo",
+    "decimals": 4,
+    "supported_dex": ["zilswap"],
+    "telegram": "https://t.me/AthleteToken",
+  },
   'BLOX': {
     "ticker": "BLOX",
     "name": "Blox Token",
