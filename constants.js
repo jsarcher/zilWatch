@@ -52,6 +52,8 @@ const coinMap = {
 // IF changed, also change in zilWatch-backend/core/crawl_coingecko.py
 const currencyMap = {
   "usd": "$",
+  "btc": "₿",
+  "eth": "ETH",
   "aed": "AED",
   "ars": "$",
   "aud": "$",
