@@ -437,7 +437,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
 
 #sidebar-wrapper {
   min-height: 100vh;
-  margin-left: -23rem;
+  margin-left: -25.5rem;
   -webkit-transition: margin .2s ease-out;
   -moz-transition: margin .2s ease-out;
   -o-transition: margin .2s ease-out;
@@ -450,7 +450,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] {
 }
 
 #sidebar-wrapper .list-group {
-  width: 23rem;
+  width: 25.5rem;
 }
 
 #page-content-wrapper {
@@ -465,6 +465,14 @@ body.sidenav-shown #wrapper #sidebar-wrapper {
   #page-content-wrapper {
       min-width: 0;
       width: 100%;
+  }
+
+  #sidebar-wrapper {
+    margin-left: -23rem;
+  }
+
+  #sidebar-wrapper .list-group {
+    width: 23rem;
   }
 }
 
