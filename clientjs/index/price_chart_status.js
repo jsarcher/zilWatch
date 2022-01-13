@@ -203,7 +203,7 @@ class PriceChartStatus {
         let self = this;
 
         // TODO: This is a hack for dXCAD. Fix this.
-        if (this.historicalPriceData_.ticker !== 'dXCAD') {
+        if (this.historicalPriceData_.ticker !== 'dXCAD' && this.historicalPriceData_.ticker !== 'zBRKL') {
             queryUrlGetAjax(
                 /* urlToGet= */
                 CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=zilswap&dex_base_token_symbol=zil&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",

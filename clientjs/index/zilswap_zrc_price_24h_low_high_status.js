@@ -25,6 +25,7 @@ class ZilswapZrcPrice24hLowHighStatus {
             // TODO: This is a hack for dXCAD. Fix this.
             if (xcadDexZrcTokenPriceInXcad24hLowData) {
                 this.zrcTokenPrice24hLowMap_.dXCAD = xcadDexZrcTokenPriceInXcad24hLowData.dXCAD
+                this.zrcTokenPrice24hLowMap_.zBRKL = xcadDexZrcTokenPriceInXcad24hLowData.zBRKL
             }
         }
         this.zrcTokenPrice24hHighMap_ = {};
@@ -33,6 +34,7 @@ class ZilswapZrcPrice24hLowHighStatus {
             // TODO: This is a hack for dXCAD. Fix this.
             if (xcadDexZrcTokenPriceInXcad24hHighData) {
                 this.zrcTokenPrice24hHighMap_.dXCAD = xcadDexZrcTokenPriceInXcad24hHighData.dXCAD
+                this.zrcTokenPrice24hHighMap_.zBRKL = xcadDexZrcTokenPriceInXcad24hHighData.zBRKL
             }
         }
 
@@ -52,7 +54,7 @@ class ZilswapZrcPrice24hLowHighStatus {
             let zrcPrice24hHigh = parseFloat(this.zrcTokenPrice24hHighMap_[ticker]);
 
             // TODO: This is a hack for dXCAD. Fix this.
-            if (ticker === 'dXCAD') {
+            if (ticker === 'dXCAD' || ticker === 'zBRKL') {
                 if (!this.zilswapDexStatus_) {
                     continue;
                 }
@@ -133,10 +135,12 @@ class ZilswapZrcPrice24hLowHighStatus {
                 let currZrcTokenPrice24hLowData = data['low'];
                 if (currZrcTokenPrice24hLowData) {
                     self.zrcTokenPrice24hLowMap_.dXCAD = currZrcTokenPrice24hLowData.dXCAD;
+                    self.zrcTokenPrice24hLowMap_.zBRKL = currZrcTokenPrice24hLowData.zBRKL;
                 }
                 let currZrcTokenPrice24hHighData = data['high'];
                 if (currZrcTokenPrice24hHighData) {
                     self.zrcTokenPrice24hHighMap_.dXCAD = currZrcTokenPrice24hHighData.dXCAD;
+                    self.zrcTokenPrice24hHighMap_.zBRKL = currZrcTokenPrice24hHighData.zBRKL;
                 }
                 self.bindViewZrcPrice24hLowHigh();
                 onSuccessCallback();
