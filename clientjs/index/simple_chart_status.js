@@ -54,6 +54,7 @@ class SimpleChartStatus {
             function (data) {
                 try {
                     self.simpleAllTokensData_.data.dXCAD = data.data.dXCAD;
+                    self.simpleAllTokensData_.data.zBRKL = data.data.zBRKL;
                 } catch (err) {
                     console.log('dXCAD doesnt exist! ' + err.message);
                 }
