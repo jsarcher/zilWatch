@@ -1193,6 +1193,20 @@ const zrcStakingTokenPropertiesListMap = {
       "pending_withdrawal": "removeStaker",
     },
   },
+  'XCAD-XCAD': {
+    "ticker": "XCAD",
+    "name": "XCAD → XCAD",
+    "address": "zil1pdce67ghg8fexl82tdnpch2xn96q5crrhnugwq",
+    "address_base16": "0x0b719D791741d3937cEa5b661C5D4699740a6063",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": 42.5,
+      "unbonding_days": 90,
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
 }
 
 const nftTokenPropertiesListMap = {
