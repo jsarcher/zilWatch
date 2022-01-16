@@ -322,6 +322,15 @@ class ZilswapDexStatus {
     }
 
     /**
+     * This is a COPY of getZilswapPairPersonalStatus(), to be generic for all dex status classes.
+     * This is an attempt to copy interface capability.
+     * In java, zilswapDexStatus should implement a baseDexStatus, which contains getDexPairPersonalStatus() as interface.
+     */
+     getDexPairPersonalStatus(zrcSymbol) {
+        return this.getZilswapPairPersonalStatus(zrcSymbol);
+    }
+
+    /**
      * Returns ZilswapPairPersonalStatus given a zrcSymbol.
      * ZilswapPairPersonalStatus contains share ratio and the amount of ZRC and ZIL in a personal wallet's LP pair.
      * 

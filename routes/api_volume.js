@@ -7,7 +7,7 @@ var router = express.Router();
 /* GET api for trade volume in Zilswap dex in the past N period. */
 router.get('/', function (req, res, next) {
     visitor.pageview("/api/volume" + req.url, "https://zilwatch.io", "TradeVolume API").send();
-    redisClient.get("zilswap_dex_trade_volume",
+    redisClient.get("aggregate_dex_trade_volume",
         function (err, reply) {
             let json_data_result = null;
             if (!err && reply) {

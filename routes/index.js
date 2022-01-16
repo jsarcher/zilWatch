@@ -18,8 +18,8 @@ router.get('/', function (req, res, next) {
       "coin_price_coingecko_timestamp_seconds", // 3
       "coin_price_coingecko", // 4
       "coin_price_coingecko_24h_ago", // 5
-      "zilswap_dex_24h_trade_volume_timestamp_seconds", // 6
-      "zilswap_dex_24h_trade_volume", // 7
+      "ignore_unused", // 6
+      "aggregate_dex_trade_volume", // 7
       "coin_market_coingecko", // 8
       "zilswap_distributor_to_ticker_map", // 9
       "zrc_tokens_total_supply", // 10
@@ -47,8 +47,8 @@ router.get('/', function (req, res, next) {
       let currCoinPriceCoingecko = null; // 4
       let currCoinPriceCoingecko24hAgo = null; // 5
 
-      let currZilswapDex24hTradeVolumeTimestampSeconds = null; // 6
-      let currZilswapDex24hTradeVolume = null; // 7
+      // unused ignored 6
+      let currAggregateDexTradeVolume = null; // 7
 
       let currCoinMarketCoingecko = null; // 8
 
@@ -99,12 +99,8 @@ router.get('/', function (req, res, next) {
             currCoinPriceCoingecko24hAgo = JSON.parse(reply[5]);
           }
 
-          if (reply[6]) {
-            currZilswapDex24hTradeVolumeTimestampSeconds = parseInt(reply[6]);
-            // Only use the cache if it's within 200 seconds.
-            if (currentTimeSeconds - currZilswapDex24hTradeVolumeTimestampSeconds <= 200 && reply[7]) {
-              currZilswapDex24hTradeVolume = JSON.parse(reply[7]);
-            }
+          if (reply[7]) {
+            currAggregateDexTradeVolume = JSON.parse(reply[7]);
           }
 
           if (reply[8]) {
@@ -186,7 +182,7 @@ router.get('/', function (req, res, next) {
         zilswapDexSmartContractState24hAgo: currZilswapDexSmartContractState24hAgo,
         coinPriceCoingecko: currCoinPriceCoingecko,
         coinPriceCoingecko24hAgo: currCoinPriceCoingecko24hAgo,
-        zilswapDex24hTradeVolume: currZilswapDex24hTradeVolume,
+        aggregateDexTradeVolume: currAggregateDexTradeVolume,
         coinMarketCoingecko: currCoinMarketCoingecko,
         zilswapDistributorToTickerMap: currZilswapDistributorToTickerMap,
         zrcTokensTotalSupply: currZrcTokensTotalSupply,

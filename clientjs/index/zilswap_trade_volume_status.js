@@ -1,24 +1,15 @@
-/** A class to represent Zilswap DEX trade volume status.  */
+/**
+ * A class to represent Zilswap DEX trade volume status. 
+ * WARNING: This now represents aggregated volume from all dexes. We need to change the Zilswap name into something generic.
+ */
 class ZilswapTradeVolumeStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ zilswapDex24hTradeVolumeData) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ aggregateDexTradeVolumeData) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
-        this.zilswapDex24hTradeVolumeData_ = zilswapDex24hTradeVolumeData;
+        this.aggregateDexTradeVolumeData_ = aggregateDexTradeVolumeData;
 
-        // private variable
-        this.coinToVolumeMap_ = {
-            '1h': {},
-            '24h': {},
-            '7d': {},
-            '1m': {},
-            '3m': {},
-            '1y': {},
-            'all': {},
-        }
-
-        this.computeCoinToVolumeMap(this.zilswapDex24hTradeVolumeData_, '24h');
         this.bindView24hTradeVolumeFiat();
     }
 
@@ -29,35 +20,26 @@ class ZilswapTradeVolumeStatus {
         this.bindView24hTradeVolumeFiat();
     }
 
-    getTradeVolumeInZil(coinSymbol, timeRange) {
-        if (!(timeRange in this.coinToVolumeMap_)) {
-            return null;
+    getTradeVolumeAllDexInZil(coinSymbol, timeRange) {
+        try {
+            let totalVolumeInZil = 0.0;
+            for (let dexName in this.aggregateDexTradeVolumeData_[timeRange][coinSymbol]) {
+                totalVolumeInZil += parseFloat(this.aggregateDexTradeVolumeData_[timeRange][coinSymbol][dexName]);
+            }
+            return totalVolumeInZil;
+        } catch (err) {
+            // Do nothing
         }
-        return this.coinToVolumeMap_[timeRange][coinSymbol];
+        return null;
     }
 
-    computeCoinToVolumeMap(currData, timeRange) {
-        if (!currData) {
-            return;
+    getTradeVolumeInZil(coinSymbol, timeRange, dexName) {
+        try {
+            return parseFloat(this.aggregateDexTradeVolumeData_[timeRange][coinSymbol][dexName]);
+        } catch (err) {
+            // Do nothing
         }
-        let poolToVolumeMap = {}
-        for (let i = 0; i < currData.length; i++) {
-            let key = currData[i].pool;
-            poolToVolumeMap[key] = currData[i];
-        }
-
-        for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let contractAddress = this.zrcTokenPropertiesListMap_[ticker].address;
-            let volumeList = poolToVolumeMap[contractAddress];
-            if (!volumeList) {
-                continue;
-            }
-            let inZilAmount = parseInt(volumeList.in_zil_amount);
-            let outZilAmount = parseInt(volumeList.out_zil_amount);
-            let totalVolumeZilAmount = inZilAmount + outZilAmount;
-
-            this.coinToVolumeMap_[timeRange][ticker] = totalVolumeZilAmount / Math.pow(10, 12);
-        }
+        return null;
     }
 
     bindView24hTradeVolumeFiat() {
@@ -70,7 +52,7 @@ class ZilswapTradeVolumeStatus {
         }
 
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let tradeVolumeInZil = this.getTradeVolumeInZil(ticker, '24h');
+            let tradeVolumeInZil = this.getTradeVolumeAllDexInZil(ticker, '24h');
             if (!tradeVolumeInZil) {
                 continue;
             }
@@ -82,9 +64,8 @@ class ZilswapTradeVolumeStatus {
     }
 
     computeDataRpcIfDataNoExist(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
-        if (this.zilswapDex24hTradeVolumeData_) {
+        if (this.aggregateDexTradeVolumeData_) {
             beforeRpcCallback();
-            this.computeCoinToVolumeMap(this.zilswapDex24hTradeVolumeData_, '24h');
             this.bindView24hTradeVolumeFiat();
             onSuccessCallback();
         }
@@ -104,14 +85,8 @@ class ZilswapTradeVolumeStatus {
                     onErrorCallback();
                     return;
                 }
-                for (let timeRange in data) {
-                    let currRangeData = data[timeRange];
-                    self.computeCoinToVolumeMap(currRangeData, timeRange);
-                    if (timeRange === '24h') {
-                        self.zilswapDex24hTradeVolumeData_ = currRangeData;
-                        self.bindView24hTradeVolumeFiat();
-                    }
-                }
+                self.aggregateDexTradeVolumeData_ = data;
+                self.bindView24hTradeVolumeFiat();
                 onSuccessCallback();
             },
             /* errorCallback= */

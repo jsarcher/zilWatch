@@ -1,10 +1,13 @@
-/** A class to represent Zilswap LP fee as reward status.  */
+/** 
+ * A class to represent Zilswap LP fee as reward status.
+ * WARNING: This now represents fees from all dexes. We need to change the Zilswap name into something generic.
+ */
 class ZilswapLpFeeRewardStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ zilswapDexStatus, /* nullable= */ zilswapTradeVolumeStatus) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ dexNameToStatusMap, /* nullable= */ zilswapTradeVolumeStatus) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
-        this.zilswapDexStatus_ = zilswapDexStatus;
+        this.dexNameToStatusMap_ = dexNameToStatusMap;
         this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
 
         // private variable
@@ -32,14 +35,18 @@ class ZilswapLpFeeRewardStatus {
         this.resetView();
     }
 
-    getLpFeeRewardInZil(zrcSymbol) {
-        
-        return this.coinToFeeRewardMap_[zrcSymbol];
+    getLpFeeRewardInZil(zrcSymbol, dexName) {
+        try {
+            return this.coinToFeeRewardMap_[zrcSymbol][dexName];
+        } catch (err) {
+            // Do nothing
+        }
+        return null;
     }
 
     /** Returns true if there is some data processed, false otherwise. */
     computeCoinToFeeRewardMap() {
-        if (!this.zilswapDexStatus_) {
+        if (!this.dexNameToStatusMap_) {
             return false;
         }
         if (!this.zilswapTradeVolumeStatus_) {
@@ -48,45 +55,68 @@ class ZilswapLpFeeRewardStatus {
 
         let isProcessed = false;
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let zilswapPairPersonalStatus = this.zilswapDexStatus_.getZilswapPairPersonalStatus(ticker);
-            if (!zilswapPairPersonalStatus) {
-                continue;
-            }
-            let shareRatio = zilswapPairPersonalStatus.shareRatio;
-            if (!shareRatio) {
-                continue;
-            }
-            let tradeVolume24hInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker, '24h');
-            if (!tradeVolume24hInZil) {
-                continue;
-            }
-            let lpFeeInZil = 0.003 * shareRatio * tradeVolume24hInZil;
-            this.coinToFeeRewardMap_[ticker] = lpFeeInZil;
 
-            isProcessed = true;
+            let supported_dex_length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length
+            for (let i = 0; i < supported_dex_length; i++) {
+                let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+                if (!(dexName in this.dexNameToStatusMap_)) {
+                    continue;
+                }
+
+                let dexPairPersonalStatus = this.dexNameToStatusMap_[dexName].getDexPairPersonalStatus(ticker);
+                if (!dexPairPersonalStatus) {
+                    continue;
+                }
+                let shareRatio = dexPairPersonalStatus.shareRatio;
+                if (!shareRatio) {
+                    continue;
+                }
+                let tradeVolume24hInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker, '24h', dexName);
+                if (!tradeVolume24hInZil) {
+                    continue;
+                }
+                let lpFeeInZil = 0.003 * shareRatio * tradeVolume24hInZil;
+
+                if (!(ticker in this.coinToFeeRewardMap_)) {
+                    this.coinToFeeRewardMap_[ticker] = {};
+                }
+                this.coinToFeeRewardMap_[ticker][dexName] = lpFeeInZil;
+
+                isProcessed = true;
+            }
         }
         return isProcessed;
     }
 
     bindViewAllLpFeeReward() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let currLpFeeReward = this.getLpFeeRewardInZil(ticker);
-            if (!currLpFeeReward) {
-                this.bindViewLpFeeReward('0', ticker);
-                continue;
+            let supported_dex_length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length
+            for (let i = 0; i < supported_dex_length; i++) {
+                let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+
+                let currLpFeeReward = this.getLpFeeRewardInZil(ticker, dexName);
+
+                if (!currLpFeeReward) {
+                    this.bindViewLpFeeReward('0', ticker, dexName);
+                    continue;
+                }
+                let currLpFeeRewardString = convertNumberQaToDecimalString(currLpFeeReward, /* decimals= */ 0);
+                this.bindViewLpFeeReward(currLpFeeRewardString, ticker, dexName);
             }
-            let currLpFeeRewardString = convertNumberQaToDecimalString(currLpFeeReward, /* decimals= */ 0);
-            this.bindViewLpFeeReward(currLpFeeRewardString, ticker);
         }
     }
 
-    bindViewLpFeeReward(currLpFeeRewardString, ticker) {
-        $('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(currLpFeeRewardString);
+    bindViewLpFeeReward(currLpFeeRewardString, ticker, dexName) {
+        $('#' + dexName + '_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(currLpFeeRewardString);
     }
 
     resetView() {
         for (let ticker in this.zrcTokenPropertiesListMap_) {
-            $('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text('Loading...');
+            let length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length;
+            for (let i = 0; i < length; i++) {
+                let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+                $('#' + dexName + '_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text('Loading...');
+            }
         }
     }
 }

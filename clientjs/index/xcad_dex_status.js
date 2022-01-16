@@ -181,6 +181,15 @@ class XcadDexStatus {
     }
 
     /**
+     * This is a COPY of getXcadPairPersonalStatus(), to be generic for all dex status classes.
+     * This is an attempt to copy interface capability.
+     * In java, zilswapDexStatus should implement a baseDexStatus, which contains getDexPairPersonalStatus() as interface.
+     */
+     getDexPairPersonalStatus(zrcSymbol) {
+        return this.getXcadPairPersonalStatus(zrcSymbol);
+    }
+
+    /**
      * Returns XcadPairPersonalStatus given a zrcSymbol.
      * XcadPairPersonalStatus contains share ratio and the amount of ZRC and XCAD in a personal wallet's LP pair.
      * 

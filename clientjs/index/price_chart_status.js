@@ -660,17 +660,35 @@ class PriceChartStatus {
         if (!this.zilswapTradeVolumeStatus_) {
             return;
         }
-        let tradeVolumeInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker, range);
-        let tradeVolumeInFiat = zilPriceInFiatFloat * tradeVolumeInZil;
-        let tradeVolumeInFiatString = convertNumberQaToDecimalString(tradeVolumeInFiat, /* decimals= */ 0);
-        if (!tradeVolumeInFiatString) {
-            tradeVolumeInFiatString = 0;
+
+        let totalTradeVolumeAllDexInFiat = 0;
+
+        // Individual Dex
+        let supported_dex_length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length
+        for (let i = 0; i < supported_dex_length; i++) {
+            let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+
+            let tradeVolumeInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker, range, dexName);
+            let tradeVolumeInFiat = zilPriceInFiatFloat * tradeVolumeInZil;
+            let tradeVolumeInFiatString = convertNumberQaToDecimalString(tradeVolumeInFiat, /* decimals= */ 0);
+            if (!tradeVolumeInFiatString) {
+                $('#price_chart_' + dexName + '_trade_volume_fiat').text('-');
+                $('#price_chart_' + dexName + '_trade_volume_fiat_container').hide();
+            } else {
+                totalTradeVolumeAllDexInFiat += tradeVolumeInFiat;
+                $('#price_chart_' + dexName + '_trade_volume_fiat').text(tradeVolumeInFiatString);
+                $('#price_chart_' + dexName + '_trade_volume_fiat_container').show();
+            }
         }
-        $('#price_chart_trade_volume_fiat').text(tradeVolumeInFiatString);
+
+        if (totalTradeVolumeAllDexInFiat) {
+            let tradeVolumeAllDexInFiatString = convertNumberQaToDecimalString(totalTradeVolumeAllDexInFiat, /* decimals= */ 0)
+            $('#price_chart_all_dex_trade_volume_fiat').text(tradeVolumeAllDexInFiatString);
+        }
 
         if (zrcCirculatingSupplyInFiat) {
-            // Liquidity to Market Cap ratio
-            let volumeMarketCapRatio = tradeVolumeInFiat / zrcCirculatingSupplyInFiat;
+            // Trade volume to circulating supply ratio
+            let volumeMarketCapRatio = totalTradeVolumeAllDexInFiat / zrcCirculatingSupplyInFiat;
             let volumeMarketCapRatioString = convertNumberQaToDecimalString(volumeMarketCapRatio, /* decimals= */ 0);
             if (!volumeMarketCapRatioString) {
                 volumeMarketCapRatioString = 0;
@@ -835,7 +853,10 @@ class PriceChartStatus {
         $('#price_chart_zilswap_liquidity_zil').text('-');
         $('#price_chart_liquidity_fiat').text('-');
         $('#price_chart_liquidity_market_cap_ratio').text('-');
-        $('#price_chart_trade_volume_fiat').text('-');
+        $('#price_chart_zilswap_trade_volume_fiat_container').hide();
+        $('#price_chart_zilswap_trade_volume_fiat').text('-');
+        $('#price_chart_xcaddex_trade_volume_fiat_container').hide();
+        $('#price_chart_xcaddex_trade_volume_fiat').text('-');
         $('#price_chart_trade_volume_market_cap_ratio').text('-');
     }
 }
