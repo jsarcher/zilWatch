@@ -1103,6 +1103,48 @@ const zrcStakingTokenPropertiesListMap = {
       "staked": "stakers_total_bal",
     },
   },
+  'dXCAD-REDC': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → REDC",
+    "address": "zil1c79kcjnuz0c724hwtxhjp3603jg4de4k350kxq",
+    "address_base16": "0xC78b6c4a7c13f1e556eE59af20c74F8C9156e6B6",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
+  'dXCAD-SPW': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → SPW",
+    "address": "zil1e7rmmplr9cze2v7sk63v2awm8fdgx7fvuvnr92",
+    "address_base16": "0xCF87Bd87E32E059533D0B6A2C575DB3a5a83792C",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
+  'dXCAD-STREAM': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → STREAM",
+    "address": "zil1tvd73crh7ne8q260elunmlhuvqgt6gmsw3vn9y",
+    "address_base16": "0x5B1bE8e077f4F2702B4fcFf93dfeFC6010Bd2370",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
   'OKIPAD': {
     "ticker": "OKI",
     "name": "Okipad",
