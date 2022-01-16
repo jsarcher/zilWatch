@@ -1386,6 +1386,16 @@ const nftTokenPropertiesListMap = {
     "website_nft_attributes_prefix": "https://okimoto.io/contracts/OPEN", // e.g., https://okimoto.io/contracts/OPEN/2015
   },
   // From here onwards it's artists' smart contract minted on SpardaWallet
+  '8BR': {
+    "ticker": "8BR",
+    "name": "8 Bit Richards",
+    "address": "zil1vuev67ecznx6r7f40ypjvsxw2ecfcrqn37338h",
+    "address_base16": "0x6732cd7B3814cDA1f93579032640ce56709c0c13",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1vuev67ecznx6r7f40ypjvsxw2ecfcrqn37338h/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://zilswap.io/arky/collections/zil1vuev67ecznx6r7f40ypjvsxw2ecfcrqn37338h",
+  },
   'BATZ': {
     "ticker": "BATZ",
     "name": "ZILBATZ NFT",
@@ -1406,6 +1416,16 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported": true,
     "website": "https://dopecrewfriends.com",
   },
+  'DIRTY': {
+    "ticker": "DIRTY",
+    "name": "The Dirty Mind",
+    "address": "zil1sle9slj8mdzt9ma0gccn7f7artsvsx2eva966m",
+    "address_base16": "0x87F2587e47Db44B2EFAf46313F27dD1aE0C81959",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1sle9slj8mdzt9ma0gccn7f7artsvsx2eva966m/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "http://www.leptitlu.com/",
+  },
   'DRC': {
     "ticker": "DRC",
     "name": "The DraCones",
@@ -1425,6 +1445,16 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://zilloween.heygo.me",
+  },
+  'EOZ': {
+    "ticker": "EOZ",
+    "name": "Elements of Zilliqa",
+    "address": "zil10jrz6xut0czvl7j38c9dgagn3qly6cs8xhxgeh",
+    "address_base16": "0x7c862D1b8B7E04cfFa513e0aD47513883e4d6207",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil10jrz6xut0czvl7j38c9dgagn3qly6cs8xhxgeh/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://ofzilliqa.com",
   },
   'ICED': {
     "ticker": "ICED",
@@ -1466,6 +1496,16 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported": false,
     "website": "https://www.spardawallet.com/marketsearch.html?3ca2e07e86ce98e3e0a594aa0e81ee300c5f16dd",
   },
+  'MAD-M': {
+    "ticker": "MAD-M",
+    "name": "MAD-M",
+    "address": "zil1pwjgv88atmuy45e3ykxxckhmvkgzprw9q0kkwu",
+    "address_base16": "0x0ba4861Cfd5ef84AD331258C6c5aFb6590208Dc5",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1pwjgv88atmuy45e3ykxxckhmvkgzprw9q0kkwu/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://zilswap.io/arky/collections/zil1pwjgv88atmuy45e3ykxxckhmvkgzprw9q0kkwu",
+  },
   'MNM': {
     "ticker": "MNM",
     "name": "Markhors & More",
@@ -1505,6 +1545,16 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://www.spardawallet.com/marketsearch.html?461b6ddb9c9c9ffd5e5fa9c422668f444be6a21f",
+  },
+  'SAC': {
+    "ticker": "SAC",
+    "name": "Soul Ape Club",
+    "address": "zil1s52qhnqgvw2g0m7ltltjwyp7y2j4jeh92dm2wy",
+    "address_base16": "0x85140Bcc08639487Efdf5FD727103e22a55966e5",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1s52qhnqgvw2g0m7ltltjwyp7y2j4jeh92dm2wy/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://zilswap.io/arky/collections/zil1s52qhnqgvw2g0m7ltltjwyp7y2j4jeh92dm2wy",
   },
   'SHROOM': {
     "ticker": "SHROOM",
