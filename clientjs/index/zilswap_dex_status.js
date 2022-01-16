@@ -286,7 +286,7 @@ class ZilswapDexStatus {
     getZrcPriceInZil24hAgoWithFallback(zrcSymbol) {
         // TODO: Remove the manual guard for dXCAD, this is to guard showing
         // zilswap price with low liquidity.
-        if (zrcSymbol !== 'dXCAD' || zrcSymbol !== 'zBRKL') {
+        if (zrcSymbol !== 'dXCAD' && zrcSymbol !== 'zBRKL') {
             let zilswapZrcPriceInZil = this.getZrcPriceInZil24hAgo(zrcSymbol);
             if (zilswapZrcPriceInZil) {
                 return zilswapZrcPriceInZil;
