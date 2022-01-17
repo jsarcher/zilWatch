@@ -610,7 +610,7 @@ block content
 
               div(class='col-6 col-xl-3 my-2')
                 p(class='h6')='All time low'
-                
+
                 div(id='price_chart_zilswap_all_time_low_container' class='mb-2' style='display: none;')
                   span(id='price_chart_zilswap_all_time_low' class='h5 font-weight-bold')='-'
                   span(class='ml-1')= 'ZIL'
@@ -920,6 +920,7 @@ block content
                     each baseTokenTicker, supportedDexName in supportedDexToBaseTokenMap
                       - let rewardLogo = supportedDexName === 'zilswap'? 'ZWAP' : 'XCAD';
                       - let hightlightBoxClass = supportedDexName === 'zilswap'? 'zilswap-highlight-box' : 'xcaddex-highlight-box';
+                      - let lpFeeRewardPercent = supportedDexName === 'zilswap'? '0.3' : '0.16';
 
                       div(id=supportedDexName + '_total_all_lp_reward_next_epoch_container' class='col-lg-6' style='padding: 0; display: none')
                         div(class=hightlightBoxClass)
@@ -944,7 +945,7 @@ block content
                                   span(class='currency_symbol text-secondary mr-1')= '$'
                                   span(id=supportedDexName + '_total_all_lp_reward_unclaimed_fiat' class='text-secondary')= 'Loading...'
                                 td(id=supportedDexName + '_total_all_lp_reward_unclaimed' class='text-secondary' style='text-align: right; white-space: nowrap;' )
-                              
+
                               tr(id=supportedDexName + '_total_all_lp_reward_past_epoch_container' style='display:none;')
                                 td(colspan='2' style='text-align: left; white-space: nowrap;' )
                                   span(class='mr-3')= 'Prev epoch'
@@ -958,7 +959,7 @@ block content
                         if !(ticker in zrcTokenPropertiesListMap)
                           - continue
                         - let tokenProperties = zrcTokenPropertiesListMap[ticker]
-                        
+
                         if !(tokenProperties.supported_dex.includes(supportedDexName))
                           - continue
 
@@ -1034,7 +1035,7 @@ block content
 
                                 tr
                                   td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
-                                    span= 'Est. 0.3% fee earned (24h)'
+                                    span= 'Est. ' + lpFeeRewardPercent + '% fee earned (24h)'
                                   td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
                                     span(id=lpPrefix+'_lp_pool_fee_reward_zil_past_range_period')= 'Loading...'
                                     span(class='ml-1')= 'ZIL'
@@ -1279,8 +1280,8 @@ block content
                   - let currTokenStartingAlphabet = '-';
                   each tokenProperties, ticker in zrcTokenPropertiesListMap
                     - let trStyle = ''
-                     if ('fixed_token_rate' in tokenProperties)
-                      - trStyle = 'display: none;'
+                      if ('fixed_token_rate' in tokenProperties)
+                        - trStyle = 'display: none;'
 
                     //- This is for Alphabet header for each new letter.
                     - let isNewCharStart = tokenProperties.ticker.charAt(0).toUpperCase() !== currTokenStartingAlphabet;
@@ -1526,7 +1527,7 @@ block script
       'zilswap': zilswapDexStatus,
       'xcaddex': xcadDexStatus,
     }
-    
+
     const stakingZrcStatus = new StakingZrcStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus);
     const stakingBalanceStatus = new StakingBalanceStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, ssnListMap, coinPriceStatus, /* walletAddressBase16= */ null, /* zilStakingBalanceData= */ null, /* zilStakingWithdrawalBalanceData= */ null, stakingZrcStatus);
     const netWorthStatus = new NetWorthStatus(barChartDrawer, coinPriceStatus, zilswapDexStatus, walletBalanceStatus, stakingBalanceStatus);

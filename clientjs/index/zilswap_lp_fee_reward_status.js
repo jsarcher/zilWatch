@@ -52,6 +52,8 @@ class ZilswapLpFeeRewardStatus {
         if (!this.zilswapTradeVolumeStatus_) {
             return false;
         }
+        let lpFeeZilswap = 0.003;
+        let lpFeeXcadDex = 0.0016;
 
         let isProcessed = false;
         for (let ticker in this.zrcTokenPropertiesListMap_) {
@@ -75,7 +77,8 @@ class ZilswapLpFeeRewardStatus {
                 if (!tradeVolume24hInZil) {
                     continue;
                 }
-                let lpFeeInZil = 0.003 * shareRatio * tradeVolume24hInZil;
+                let lpFeeRatio = dexName === 'zilswap' ? lpFeeZilswap : lpFeeXcadDex;
+                let lpFeeInZil = lpFeeRatio * shareRatio * tradeVolume24hInZil;
 
                 if (!(ticker in this.coinToFeeRewardMap_)) {
                     this.coinToFeeRewardMap_[ticker] = {};
