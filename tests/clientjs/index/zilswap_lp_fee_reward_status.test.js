@@ -5,7 +5,7 @@ var $ = indexJsdom.$;
 var assert = require('assert');
 var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
 var XcadDexStatus = require('../../../clientjs/index/xcad_dex_status.js');
-var ZilswapTradeVolumeStatus = require('../../../clientjs/index/zilswap_trade_volume_status.js');
+var AggregateDexTradeVolumeStatus = require('../../../clientjs/index/aggregate_dex_trade_volume_status.js');
 var ZilswapLpFeeRewardStatus = require('../../../clientjs/index/zilswap_lp_fee_reward_status.js');
 var Constants = require('../../../constants.js');
 
@@ -18,11 +18,11 @@ describe('ZilswapLpFeeRewardStatus', function () {
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* zilswapTradeVolumeStatus= */ null);
+            let zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* aggregateDexTradeVolumeStatus= */ null);
 
             assert.strictEqual(zilswapLpFeeRewardStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
             assert.strictEqual(zilswapLpFeeRewardStatus.dexNameToStatusMap_, null);
-            assert.strictEqual(zilswapLpFeeRewardStatus.zilswapTradeVolumeStatus_, null);
+            assert.strictEqual(zilswapLpFeeRewardStatus.aggregateDexTradeVolumeStatus_, null);
             assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, {});
         });
     });
@@ -73,7 +73,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
         }
 
         let aggregateDexTradeVolumeData = JSON.parse(fs.readFileSync('./tests/testdata/zilwatch_aggregate_dex_trade_volume_20220116.txt', 'utf8'));
-        let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, aggregateDexTradeVolumeData);
+        let aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus.AggregateDexTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, aggregateDexTradeVolumeData);
 
         let walletAddressBase16 = "0x278598f13A4cb142E44ddE38ABA8d8C0190bcB85".toLowerCase();
         let zilswapDexSmartContractStateData = JSON.parse(fs.readFileSync('./tests/testdata/zilswapdex_contractstate_20210602.txt', 'utf8'));
@@ -96,7 +96,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
                     assert.strictEqual($('#' + dexName + '_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "Loading...");
                 }
             }
-            zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, dexNameToStatusMap, zilswapTradeVolumeStatus);
+            zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, dexNameToStatusMap, aggregateDexTradeVolumeStatus);
         });
 
         it('Data computed and binded', function () {
@@ -153,12 +153,12 @@ describe('ZilswapLpFeeRewardStatus', function () {
             }
         });
 
-        it('Reset, onZilswapTradeVolumeStatusChange, data computed and binded', function () {
+        it('Reset, onAggregateDexTradeVolumeStatusChange, data computed and binded', function () {
             // Reset
             zilswapLpFeeRewardStatus.reset();
 
             // OnChange
-            zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+            zilswapLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
 
             // Assert
             assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
@@ -179,7 +179,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
     });
 
     describe('bindViewPublic', function () {
-        let zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* zilswapTradeVolumeStatus= */ null);
+        let zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* aggregateDexTradeVolumeStatus= */ null);
 
         describe('#bindViewLpFeeReward()', function () {
 

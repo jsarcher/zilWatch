@@ -3,20 +3,20 @@ var fs = require('fs')
 var $ = indexJsdom.$;
 
 var assert = require('assert');
-var CoinPriceStatus = require('../../../clientjs/index//coin_price_status.js');
-var ZilswapTradeVolumeStatus = require('../../../clientjs/index//zilswap_trade_volume_status.js');
+var CoinPriceStatus = require('../../../clientjs/index/coin_price_status.js');
+var AggregateDexTradeVolumeStatus = require('../../../clientjs/index/aggregate_dex_trade_volume_status.js');
 var Constants = require('../../../constants.js');
 
-describe('ZilswapTradeVolumeStatus', function () {
+describe('AggregateDexTradeVolumeStatus', function () {
 
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* aggregateDexTradeVolumeData= */ null);
+            let aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus.AggregateDexTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* aggregateDexTradeVolumeData= */ null);
 
-            assert.strictEqual(zilswapTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
-            assert.strictEqual(zilswapTradeVolumeStatus.coinPriceStatus_, null);
-            assert.strictEqual(zilswapTradeVolumeStatus.aggregateDexTradeVolumeData_, null);
+            assert.strictEqual(aggregateDexTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
+            assert.strictEqual(aggregateDexTradeVolumeStatus.coinPriceStatus_, null);
+            assert.strictEqual(aggregateDexTradeVolumeStatus.aggregateDexTradeVolumeData_, null);
         });
 
         it('create proper object', function () {
@@ -26,11 +26,11 @@ describe('ZilswapTradeVolumeStatus', function () {
 
             let aggregateDexTradeVolumeData = JSON.parse(fs.readFileSync('./tests/testdata/zilwatch_aggregate_dex_trade_volume_20220116.txt', 'utf8'));
 
-            let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData);
+            let aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus.AggregateDexTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData);
 
-            assert.strictEqual(zilswapTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
-            assert.strictEqual(zilswapTradeVolumeStatus.coinPriceStatus_, coinPriceStatus);
-            assert.deepStrictEqual(zilswapTradeVolumeStatus.aggregateDexTradeVolumeData_, aggregateDexTradeVolumeData);
+            assert.strictEqual(aggregateDexTradeVolumeStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
+            assert.strictEqual(aggregateDexTradeVolumeStatus.coinPriceStatus_, coinPriceStatus);
+            assert.deepStrictEqual(aggregateDexTradeVolumeStatus.aggregateDexTradeVolumeData_, aggregateDexTradeVolumeData);
         });
     });
 
@@ -152,17 +152,17 @@ describe('ZilswapTradeVolumeStatus', function () {
 
             let aggregateDexTradeVolumeData = JSON.parse(fs.readFileSync('./tests/testdata/zilwatch_aggregate_dex_trade_volume_20220116.txt', 'utf8'));
 
-            let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData);
+            let aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus.AggregateDexTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData);
 
             // Assert
-            assert.deepStrictEqual(zilswapTradeVolumeStatus.aggregateDexTradeVolumeData_, aggregateDexTradeVolumeData);
+            assert.deepStrictEqual(aggregateDexTradeVolumeStatus.aggregateDexTradeVolumeData_, aggregateDexTradeVolumeData);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), expectedTotalVolumeFiatUsdMap[ticker]);
             }
 
             // Change to IDR
             coinPriceStatus.setActiveCurrencyCode('idr');
-            zilswapTradeVolumeStatus.onCoinPriceStatusChange();
+            aggregateDexTradeVolumeStatus.onCoinPriceStatusChange();
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), expectedTotalVolumeFiatIdrMap[ticker]);
@@ -176,10 +176,10 @@ describe('ZilswapTradeVolumeStatus', function () {
 
             let aggregateDexTradeVolumeData = JSON.parse(fs.readFileSync('./tests/testdata/zilwatch_aggregate_dex_trade_volume_20220116.txt', 'utf8'));
 
-            let zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData);
+            let aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus.AggregateDexTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData);
 
-            let gzilZilswapTradeVolumeInZil = zilswapTradeVolumeStatus.getTradeVolumeInZil('gZIL', '24h', 'zilswap');
-            let gzilXcadTradeVolumeInZil = zilswapTradeVolumeStatus.getTradeVolumeInZil('gZIL', '24h', 'xcaddex');
+            let gzilZilswapTradeVolumeInZil = aggregateDexTradeVolumeStatus.getTradeVolumeInZil('gZIL', '24h', 'zilswap');
+            let gzilXcadTradeVolumeInZil = aggregateDexTradeVolumeStatus.getTradeVolumeInZil('gZIL', '24h', 'xcaddex');
 
             let gzilAllDexTradeVolumeInZil = gzilZilswapTradeVolumeInZil + gzilXcadTradeVolumeInZil;
             let gzilAllDexTradeVolumeInFiat = gzilAllDexTradeVolumeInZil * 0.11819;
@@ -193,11 +193,11 @@ describe('ZilswapTradeVolumeStatus', function () {
     });
 
     describe('bindViewPublic', function () {
-        var zilswapTradeVolumeStatus;
+        var aggregateDexTradeVolumeStatus;
 
         beforeEach(function (done) {
             indexJsdom.resetHtmlView(done);
-            zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus.ZilswapTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* aggregateDexTradeVolumeData= */ null);
+            aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus.AggregateDexTradeVolumeStatus(Constants.zrcTokenPropertiesListMap, /* coinPriceStatus= */ null, /* aggregateDexTradeVolumeData= */ null);
         });
 
         describe('#bindView24hVolumeFiat()', function () {
@@ -211,7 +211,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             it('bind view happy case', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapTradeVolumeStatus.bindView24hVolumeFiat('1234.4', ticker);
+                    aggregateDexTradeVolumeStatus.bindView24hVolumeFiat('1234.4', ticker);
 
                     // Assert
                     assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), '1234.4');
@@ -221,7 +221,7 @@ describe('ZilswapTradeVolumeStatus', function () {
             it('bind view random string', function () {
                 for (let ticker in Constants.zrcTokenPropertiesListMap) {
                     // Act
-                    zilswapTradeVolumeStatus.bindView24hVolumeFiat('asdf', ticker);
+                    aggregateDexTradeVolumeStatus.bindView24hVolumeFiat('asdf', ticker);
 
                     // Assert
                     assert.strictEqual($('#' + ticker + '_lp_past_range_volume_fiat').text(), 'asdf');

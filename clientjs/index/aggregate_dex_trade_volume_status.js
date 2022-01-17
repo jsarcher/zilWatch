@@ -1,8 +1,7 @@
 /**
- * A class to represent Zilswap DEX trade volume status. 
- * WARNING: This now represents aggregated volume from all dexes. We need to change the Zilswap name into something generic.
+ * A class to represent Aggregate DEX trade volume status. 
  */
-class ZilswapTradeVolumeStatus {
+class AggregateDexTradeVolumeStatus {
 
     constructor(zrcTokenPropertiesListMap, /* nullable= */ coinPriceStatus, /* nullable= */ aggregateDexTradeVolumeData) {
         // Private variable
@@ -110,5 +109,5 @@ if (typeof exports !== 'undefined') {
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');
     }
-    exports.ZilswapTradeVolumeStatus = ZilswapTradeVolumeStatus;
+    exports.AggregateDexTradeVolumeStatus = AggregateDexTradeVolumeStatus;
 }

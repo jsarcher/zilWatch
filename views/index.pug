@@ -1535,14 +1535,14 @@ block script
     const coinMarketStatus = new CoinMarketStatus(coinMap, coinPriceStatus, coinMarketCoingeckoData);
     const zilswapZrcPrice24hLowHighStatus = new ZilswapZrcPrice24hLowHighStatus(zrcTokenPropertiesListMap, zilswapDexStatus, zrcTokenPrice24hLowData, zrcTokenPrice24hHighData, xcadDexZrcTokenPriceInXcad24hLowData, xcadDexZrcTokenPriceInXcad24hHighData);
 
-    const zilswapTradeVolumeStatus = new ZilswapTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData)
+    const aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, xcadDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
-    const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, dexNameToStatusMap, zilswapTradeVolumeStatus);
+    const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, dexNameToStatusMap, aggregateDexTradeVolumeStatus);
     const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, supportedDexToBaseTokenMap, coinPriceStatus, zilswapDexStatus, zilswapDistributorToTickerMapData, xcadDexDistributorToTickerMapData);
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
 
-    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, xcadDexStatus, zilswapTradeVolumeStatus, zilswapDexRewardData, xcadDexRewardData, zrcStakingRewardData);
+    const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, xcadDexStatus, aggregateDexTradeVolumeStatus, zilswapDexRewardData, xcadDexRewardData, zrcStakingRewardData);
 
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
     const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();
@@ -1632,13 +1632,13 @@ block script
     }
 
     /** Refresh functions */
-    function refreshZilswapTradeVolumeStatus() {
-      zilswapTradeVolumeStatus.computeDataRpc(
+    function refreshAggregateDexTradeVolumeStatus() {
+      aggregateDexTradeVolumeStatus.computeDataRpc(
         /* beforeRpcCallback= */
         function() {},
         /* onSuccessCallback= */
         function() {
-          zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+          zilswapLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
           refreshDataTable();
         },
         /* onErrorCallback= */
@@ -1752,7 +1752,7 @@ block script
           walletBalanceStatus.onCoinPriceStatusChange();
           stakingBalanceStatus.onCoinPriceStatusChange();
           netWorthStatus.onCoinPriceStatusChange();
-          zilswapTradeVolumeStatus.onCoinPriceStatusChange();
+          aggregateDexTradeVolumeStatus.onCoinPriceStatusChange();
           zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
           priceChartStatus.onCoinPriceStatusChange();
 

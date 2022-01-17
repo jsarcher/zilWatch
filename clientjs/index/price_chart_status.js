@@ -45,7 +45,7 @@ class PriceChartStatus {
         /* nullable= */ coinPriceStatus,
         /* nullable= */ zilswapDexStatus,
         /* nullable= */ xcadDexStatus,
-        /* nullable= */ zilswapTradeVolumeStatus,
+        /* nullable= */ aggregateDexTradeVolumeStatus,
         /* nullable= */ zilswapDexRewardData, 
         /* nullable= */ xcadDexRewardData, 
         /* nullable= */ zrcStakingRewardData) {
@@ -56,7 +56,7 @@ class PriceChartStatus {
         this.coinPriceStatus_ = coinPriceStatus;
         this.zilswapDexStatus_ = zilswapDexStatus;
         this.xcadDexStatus_ = xcadDexStatus;
-        this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
+        this.aggregateDexTradeVolumeStatus_ = aggregateDexTradeVolumeStatus;
         this.zilswapDexRewardData_ = zilswapDexRewardData;
         this.xcadDexRewardData_ = xcadDexRewardData;
         this.zrcStakingRewardData_ = zrcStakingRewardData;
@@ -657,7 +657,7 @@ class PriceChartStatus {
         }
 
         // ---- Trade Volume ----
-        if (!this.zilswapTradeVolumeStatus_) {
+        if (!this.aggregateDexTradeVolumeStatus_) {
             return;
         }
 
@@ -668,7 +668,7 @@ class PriceChartStatus {
         for (let i = 0; i < supported_dex_length; i++) {
             let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
 
-            let tradeVolumeInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker, range, dexName);
+            let tradeVolumeInZil = this.aggregateDexTradeVolumeStatus_.getTradeVolumeInZil(ticker, range, dexName);
             let tradeVolumeInFiat = zilPriceInFiatFloat * tradeVolumeInZil;
             let tradeVolumeInFiatString = convertNumberQaToDecimalString(tradeVolumeInFiat, /* decimals= */ 0);
             if (!tradeVolumeInFiatString) {

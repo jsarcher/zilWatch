@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Public information
     computeZilswapDexPublicStatus();
-    computeZilswapTradeVolumeStatus();
+    computeAggregateDexTradeVolumeStatus();
     computeCoinMarketStatus();
     computeZilswapZrcPrice24hLowHighStatus();
     computePriceChartStatus();
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Loop forever to refresh simple charts for sidebar
     setInterval(function () {
         computeSimpleChartStatus();
-        refreshZilswapTradeVolumeStatus();
+        refreshAggregateDexTradeVolumeStatus();
         refreshZilswapZrcPrice24hLowHighStatus();
     }, REFRESH_INTERVAL_15MINS_MS);
 
@@ -282,13 +282,13 @@ function computeCoinMarketStatus() {
         function () {});
 }
 
-function computeZilswapTradeVolumeStatus() {
-    zilswapTradeVolumeStatus.computeDataRpcIfDataNoExist(
+function computeAggregateDexTradeVolumeStatus() {
+    aggregateDexTradeVolumeStatus.computeDataRpcIfDataNoExist(
         /* beforeRpcCallback= */
         function () {},
         /* onSuccessCallback= */
         function () {
-            zilswapLpFeeRewardStatus.onZilswapTradeVolumeStatusChange();
+            zilswapLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
             refreshDataTable();
         },
         /* onErrorCallback= */
@@ -366,7 +366,7 @@ function computeCoinPriceStatus(currencyCode) {
             walletBalanceStatus.onCoinPriceStatusChange();
             stakingBalanceStatus.onCoinPriceStatusChange();
             netWorthStatus.onCoinPriceStatusChange();
-            zilswapTradeVolumeStatus.onCoinPriceStatusChange();
+            aggregateDexTradeVolumeStatus.onCoinPriceStatusChange();
             zilswapLpZwapRewardStatus.onCoinPriceStatusChange();
             priceChartStatus.onCoinPriceStatusChange();
 

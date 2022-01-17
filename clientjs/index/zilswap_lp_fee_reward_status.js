@@ -4,11 +4,11 @@
  */
 class ZilswapLpFeeRewardStatus {
 
-    constructor(zrcTokenPropertiesListMap, /* nullable= */ dexNameToStatusMap, /* nullable= */ zilswapTradeVolumeStatus) {
+    constructor(zrcTokenPropertiesListMap, /* nullable= */ dexNameToStatusMap, /* nullable= */ aggregateDexTradeVolumeStatus) {
         // Private variable
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.dexNameToStatusMap_ = dexNameToStatusMap;
-        this.zilswapTradeVolumeStatus_ = zilswapTradeVolumeStatus;
+        this.aggregateDexTradeVolumeStatus_ = aggregateDexTradeVolumeStatus;
 
         // private variable
         this.coinToFeeRewardMap_ = {};
@@ -24,7 +24,7 @@ class ZilswapLpFeeRewardStatus {
         }
     }
 
-    onZilswapTradeVolumeStatusChange() {
+    onAggregateDexTradeVolumeStatusChange() {
         if (this.computeCoinToFeeRewardMap()) {
             this.bindViewAllLpFeeReward();
         }
@@ -49,7 +49,7 @@ class ZilswapLpFeeRewardStatus {
         if (!this.dexNameToStatusMap_) {
             return false;
         }
-        if (!this.zilswapTradeVolumeStatus_) {
+        if (!this.aggregateDexTradeVolumeStatus_) {
             return false;
         }
         let lpFeeZilswap = 0.003;
@@ -73,7 +73,7 @@ class ZilswapLpFeeRewardStatus {
                 if (!shareRatio) {
                     continue;
                 }
-                let tradeVolume24hInZil = this.zilswapTradeVolumeStatus_.getTradeVolumeInZil(ticker, '24h', dexName);
+                let tradeVolume24hInZil = this.aggregateDexTradeVolumeStatus_.getTradeVolumeInZil(ticker, '24h', dexName);
                 if (!tradeVolume24hInZil) {
                     continue;
                 }
