@@ -1,8 +1,7 @@
 /** 
- * A class to represent Zilswap LP fee as reward status.
- * WARNING: This now represents fees from all dexes. We need to change the Zilswap name into something generic.
+ * A class to represent Aggregate dex LP fee as reward status.
  */
-class ZilswapLpFeeRewardStatus {
+class AggregateDexLpFeeRewardStatus {
 
     constructor(zrcTokenPropertiesListMap, /* nullable= */ dexNameToStatusMap, /* nullable= */ aggregateDexTradeVolumeStatus) {
         // Private variable
@@ -132,5 +131,5 @@ if (typeof exports !== 'undefined') {
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');
     }
-    exports.ZilswapLpFeeRewardStatus = ZilswapLpFeeRewardStatus;
+    exports.AggregateDexLpFeeRewardStatus = AggregateDexLpFeeRewardStatus;
 }

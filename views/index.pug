@@ -1537,7 +1537,7 @@ block script
 
     const aggregateDexTradeVolumeStatus = new AggregateDexTradeVolumeStatus(zrcTokenPropertiesListMap, coinPriceStatus, aggregateDexTradeVolumeData)
     const uniqueCoinStatus = new UniqueCoinStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, barChartDrawer, zilswapDexStatus, xcadDexStatus, walletBalanceStatus, stakingBalanceStatus, stakingZrcStatus);
-    const zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus(zrcTokenPropertiesListMap, dexNameToStatusMap, aggregateDexTradeVolumeStatus);
+    const aggregateDexLpFeeRewardStatus = new AggregateDexLpFeeRewardStatus(zrcTokenPropertiesListMap, dexNameToStatusMap, aggregateDexTradeVolumeStatus);
     const zilswapLpZwapRewardStatus = new ZilswapLpZwapRewardStatus(zrcTokenPropertiesListMap, supportedDexToBaseTokenMap, coinPriceStatus, zilswapDexStatus, zilswapDistributorToTickerMapData, xcadDexDistributorToTickerMapData);
 
     const swapStatus = new SwapStatus(zrcTokenPropertiesListMap, coinPriceStatus, zilswapDexStatus, walletBalanceStatus)
@@ -1638,7 +1638,7 @@ block script
         function() {},
         /* onSuccessCallback= */
         function() {
-          zilswapLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
+          aggregateDexLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
           refreshDataTable();
         },
         /* onErrorCallback= */
@@ -1702,7 +1702,7 @@ block script
           stakingBalanceStatus.onZilswapDexStatusChange();
           netWorthStatus.onZilswapDexStatusChange();
           uniqueCoinStatus.onZilswapDexStatusChange();
-          zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
+          aggregateDexLpFeeRewardStatus.onZilswapDexStatusChange();
           zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
           zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
           priceChartStatus.onZilswapDexStatusChange();

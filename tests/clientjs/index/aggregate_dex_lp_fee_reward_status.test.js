@@ -6,10 +6,10 @@ var assert = require('assert');
 var ZilswapDexStatus = require('../../../clientjs/index/zilswap_dex_status.js');
 var XcadDexStatus = require('../../../clientjs/index/xcad_dex_status.js');
 var AggregateDexTradeVolumeStatus = require('../../../clientjs/index/aggregate_dex_trade_volume_status.js');
-var ZilswapLpFeeRewardStatus = require('../../../clientjs/index/zilswap_lp_fee_reward_status.js');
+var AggregateDexLpFeeRewardStatus = require('../../../clientjs/index/aggregate_dex_lp_fee_reward_status.js');
 var Constants = require('../../../constants.js');
 
-describe('ZilswapLpFeeRewardStatus', function () {
+describe('AggregateDexLpFeeRewardStatus', function () {
 
     beforeEach(function (done) {
         indexJsdom.resetHtmlView(done);
@@ -18,26 +18,26 @@ describe('ZilswapLpFeeRewardStatus', function () {
     describe('#constructor()', function () {
 
         it('create empty object', function () {
-            let zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* aggregateDexTradeVolumeStatus= */ null);
+            let aggregateDexLpFeeRewardStatus = new AggregateDexLpFeeRewardStatus.AggregateDexLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* aggregateDexTradeVolumeStatus= */ null);
 
-            assert.strictEqual(zilswapLpFeeRewardStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
-            assert.strictEqual(zilswapLpFeeRewardStatus.dexNameToStatusMap_, null);
-            assert.strictEqual(zilswapLpFeeRewardStatus.aggregateDexTradeVolumeStatus_, null);
-            assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, {});
+            assert.strictEqual(aggregateDexLpFeeRewardStatus.zrcTokenPropertiesListMap_, Constants.zrcTokenPropertiesListMap);
+            assert.strictEqual(aggregateDexLpFeeRewardStatus.dexNameToStatusMap_, null);
+            assert.strictEqual(aggregateDexLpFeeRewardStatus.aggregateDexTradeVolumeStatus_, null);
+            assert.deepStrictEqual(aggregateDexLpFeeRewardStatus.coinToFeeRewardMap_, {});
         });
     });
 
     describe('#method()', function () {
         var expectedEarnedFeeMap = {
             'CARB': {
-                'xcaddex': 0.04113789095924563,
+                'xcaddex': 0.02194020851159767,
                 'zilswap': 0.4502438847365122
             },
             'dXCAD': {
-                'xcaddex': 0.11607016724709818
+                'xcaddex': 0.06190408919845237
             },
             'PORT': {
-                'xcaddex': 0.34006357140926446
+                'xcaddex': 0.18136723808494107
             },
             'REDC': {
                 'zilswap': 0.5175858905773656
@@ -52,14 +52,14 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
         var expectedEarnedFeeStringMap = {
             'CARB': {
-                'xcaddex': '0.04114',
+                'xcaddex': '0.02194',
                 'zilswap': '0.4502'
             },
             'dXCAD': {
-                'xcaddex': '0.1161'
+                'xcaddex': '0.06190'
             },
             'PORT': {
-                'xcaddex': '0.3401'
+                'xcaddex': '0.1814'
             },
             'REDC': {
                 'zilswap': '0.5176'
@@ -86,7 +86,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
             'zilswap': zilswapDexStatus,
             'xcaddex': xcadDexStatus,
         }
-        let zilswapLpFeeRewardStatus;
+        let aggregateDexLpFeeRewardStatus;
 
         beforeEach(function () {
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
@@ -96,12 +96,12 @@ describe('ZilswapLpFeeRewardStatus', function () {
                     assert.strictEqual($('#' + dexName + '_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), "Loading...");
                 }
             }
-            zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, dexNameToStatusMap, aggregateDexTradeVolumeStatus);
+            aggregateDexLpFeeRewardStatus = new AggregateDexLpFeeRewardStatus.AggregateDexLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, dexNameToStatusMap, aggregateDexTradeVolumeStatus);
         });
 
         it('Data computed and binded', function () {
 
-            assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
+            assert.deepStrictEqual(aggregateDexLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
 
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 let length = Constants.zrcTokenPropertiesListMap[ticker].supported_dex.length;
@@ -120,10 +120,10 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
         it('Reset, data and view cleared', function () {
             // Reset
-            zilswapLpFeeRewardStatus.reset();
+            aggregateDexLpFeeRewardStatus.reset();
 
             // Assert Empty
-            assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, {});
+            assert.deepStrictEqual(aggregateDexLpFeeRewardStatus.coinToFeeRewardMap_, {});
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 assert.strictEqual($('#zilswap_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'Loading...');
             }
@@ -131,13 +131,13 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
         it('Reset, onZilswapDexStatusChange, data computed and binded', function () {
             // Reset
-            zilswapLpFeeRewardStatus.reset();
+            aggregateDexLpFeeRewardStatus.reset();
 
             // OnChange
-            zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
+            aggregateDexLpFeeRewardStatus.onZilswapDexStatusChange();
 
             // Assert
-            assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
+            assert.deepStrictEqual(aggregateDexLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 let length = Constants.zrcTokenPropertiesListMap[ticker].supported_dex.length;
                 for (let i = 0; i < length; i++) {
@@ -155,13 +155,13 @@ describe('ZilswapLpFeeRewardStatus', function () {
 
         it('Reset, onAggregateDexTradeVolumeStatusChange, data computed and binded', function () {
             // Reset
-            zilswapLpFeeRewardStatus.reset();
+            aggregateDexLpFeeRewardStatus.reset();
 
             // OnChange
-            zilswapLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
+            aggregateDexLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
 
             // Assert
-            assert.deepStrictEqual(zilswapLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
+            assert.deepStrictEqual(aggregateDexLpFeeRewardStatus.coinToFeeRewardMap_, expectedEarnedFeeMap);
             for (let ticker in Constants.zrcTokenPropertiesListMap) {
                 let length = Constants.zrcTokenPropertiesListMap[ticker].supported_dex.length;
                 for (let i = 0; i < length; i++) {
@@ -179,7 +179,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
     });
 
     describe('bindViewPublic', function () {
-        let zilswapLpFeeRewardStatus = new ZilswapLpFeeRewardStatus.ZilswapLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* aggregateDexTradeVolumeStatus= */ null);
+        let aggregateDexLpFeeRewardStatus = new AggregateDexLpFeeRewardStatus.AggregateDexLpFeeRewardStatus(Constants.zrcTokenPropertiesListMap, /* dexNameToStatusMap= */ null, /* aggregateDexTradeVolumeStatus= */ null);
 
         describe('#bindViewLpFeeReward()', function () {
 
@@ -196,7 +196,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
                     for (let i = 0; i < length; i++) {
                         let dexName = Constants.zrcTokenPropertiesListMap[ticker].supported_dex[i];
                         // Act
-                        zilswapLpFeeRewardStatus.bindViewLpFeeReward('1234.4', ticker, dexName);
+                        aggregateDexLpFeeRewardStatus.bindViewLpFeeReward('1234.4', ticker, dexName);
 
                         // Assert
                         assert.strictEqual($('#' + dexName + '_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), '1234.4');
@@ -210,7 +210,7 @@ describe('ZilswapLpFeeRewardStatus', function () {
                     for (let i = 0; i < length; i++) {
                         let dexName = Constants.zrcTokenPropertiesListMap[ticker].supported_dex[i];
                         // Act
-                        zilswapLpFeeRewardStatus.bindViewLpFeeReward('asdf', ticker, dexName);
+                        aggregateDexLpFeeRewardStatus.bindViewLpFeeReward('asdf', ticker, dexName);
 
                         // Assert
                         assert.strictEqual($('#' + dexName + '_' + ticker + '_lp_pool_fee_reward_zil_past_range_period').text(), 'asdf');

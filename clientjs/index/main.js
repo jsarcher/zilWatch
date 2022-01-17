@@ -172,7 +172,7 @@ function refreshMainContentData(account) {
     zilswapDexStatus.resetPersonal();
     netWorthStatus.reset();
     uniqueCoinStatus.reset();
-    zilswapLpFeeRewardStatus.reset();
+    aggregateDexLpFeeRewardStatus.reset();
     swapStatus.reset();
 
     // Load swap history for current address
@@ -288,7 +288,7 @@ function computeAggregateDexTradeVolumeStatus() {
         function () {},
         /* onSuccessCallback= */
         function () {
-            zilswapLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
+            aggregateDexLpFeeRewardStatus.onAggregateDexTradeVolumeStatusChange();
             refreshDataTable();
         },
         /* onErrorCallback= */
@@ -318,7 +318,7 @@ function computeZilswapDexPersonalStatus(walletAddressBase16) {
             stakingBalanceStatus.onZilswapDexStatusChange();
             netWorthStatus.onZilswapDexStatusChange();
             uniqueCoinStatus.onZilswapDexStatusChange();
-            zilswapLpFeeRewardStatus.onZilswapDexStatusChange();
+            aggregateDexLpFeeRewardStatus.onZilswapDexStatusChange();
             zilswapLpZwapRewardStatus.onZilswapDexStatusChange();
             zilswapZrcPrice24hLowHighStatus.onZilswapDexStatusChange();
             priceChartStatus.onZilswapDexStatusChange();
