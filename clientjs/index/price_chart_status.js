@@ -684,6 +684,8 @@ class PriceChartStatus {
         if (totalTradeVolumeAllDexInFiat) {
             let tradeVolumeAllDexInFiatString = convertNumberQaToDecimalString(totalTradeVolumeAllDexInFiat, /* decimals= */ 0)
             $('#price_chart_all_dex_trade_volume_fiat').text(tradeVolumeAllDexInFiatString);
+        } else {
+            $('#price_chart_all_dex_trade_volume_fiat').text('0');
         }
 
         if (zrcCirculatingSupplyInFiat) {
