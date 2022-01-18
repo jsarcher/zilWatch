@@ -825,6 +825,17 @@ const zrcTokenPropertiesListMap = {
     "website": "https://zilall.com/",
     "telegram": "https://t.me/zilall_community",
   },
+  'WALLEX': {
+    "ticker": "WALLEX",
+    "name": "Wallex",
+    "address": "zil19eq5wemqt6gjxn6cx74u47zq6458f7xyye3h3e",
+    "address_base16": "0x2e414767605E91234f5837aBcAF840d56874F8C4",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil19eq5wemqt6gjxn6cx74u47zq6458f7xyye3h3e/logo",
+    "decimals": 4,
+    "supported_dex": ["zilswap"],
+    "website": "https://zilall.com/",
+    "telegram": "https://t.me/zilall_community",
+  },
   'XCAD': {
     "ticker": "XCAD",
     "name": "XCAD Network",
