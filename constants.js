@@ -958,6 +958,17 @@ const zrcTokenPropertiesListMap = {
     "telegram": "https://t.me/zilpaychat",
     "whitepaper": "https://drive.google.com/file/d/1X-z5AHBp2cOwyXo4ZuVCCBuk7MIX-r6k/view",
   },
+  'zOPUL': {
+    "ticker": "zOPUL",
+    "name": "Bridged OPUL",
+    "address": "zil1yqwyfdpxmp0m9suz2c6gx9qgyh7crwd42jz9j4",
+    "address_base16": "0x201C44B426D85fB2c382563483140825Fd81b9b5",
+    "logo_url": "https://swap.xcadnetwork.com/icons/OPUL.png",
+    "decimals": 18,
+    "supported_dex": ["xcaddex", "zilswap"],
+    "website": "https://opulous.org",
+    "telegram": "https://t.me/opulousapp",
+  },
   'ZPAINT': {
     "ticker": "ZPAINT",
     "name": "ZilWall Paint",
