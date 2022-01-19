@@ -202,35 +202,7 @@ class PriceChartStatus {
 
         let self = this;
 
-        // TODO: This is a hack for dXCAD. Fix this.
-        if (this.historicalPriceData_.ticker !== 'dXCAD' && this.historicalPriceData_.ticker !== 'zBRKL') {
-            queryUrlGetAjax(
-                /* urlToGet= */
-                CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=zilswap&dex_base_token_symbol=zil&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
-                /* successCallback= */
-                function (data) {
-                    try {
-                        if ('ticker' in data && 'range' in data) {
-                            if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
-                                self.historicalPriceData_['zilswap'] = data;
-                                self.bindViewAllInformation();
-                                self.bindViewPriceChart( /* isForceRedraw= */ false);
-                                onSuccessCallback();
-                                return;
-                            }
-                        }
-                    } catch {
-                        // Do nothing
-                    }
-                    self.bindViewAllInformation();
-                    onErrorCallback();
-                },
-                /* errorCallback= */
-                function () {
-                    self.bindViewAllInformation();
-                    onErrorCallback();
-                });
-        } else {
+        if (getMainDexName(this.historicalPriceData_.ticker) === 'xcaddex') {
             queryUrlGetAjax(
                 /* urlToGet= */
                 CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=xcad&dex_base_token_symbol=xcad&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
@@ -257,15 +229,34 @@ class PriceChartStatus {
                     self.bindViewAllInformation();
                     onErrorCallback();
                 });
+        } else {
+            queryUrlGetAjax(
+                /* urlToGet= */
+                CONST_ZILWATCH_ROOT_URL + "/api/tokenprice?dex_name=zilswap&dex_base_token_symbol=zil&token_symbol=" + self.historicalPriceData_.ticker + "&range=" + self.historicalPriceData_.range + "&requester=zilwatch_dashboard",
+                /* successCallback= */
+                function (data) {
+                    try {
+                        if ('ticker' in data && 'range' in data) {
+                            if (data.ticker === self.historicalPriceData_.ticker && data.range === self.historicalPriceData_.range) {
+                                self.historicalPriceData_['zilswap'] = data;
+                                self.bindViewAllInformation();
+                                self.bindViewPriceChart( /* isForceRedraw= */ false);
+                                onSuccessCallback();
+                                return;
+                            }
+                        }
+                    } catch {
+                        // Do nothing
+                    }
+                    self.bindViewAllInformation();
+                    onErrorCallback();
+                },
+                /* errorCallback= */
+                function () {
+                    self.bindViewAllInformation();
+                    onErrorCallback();
+                });
         }
-    }
-
-    getMainDexName(ticker) {
-        let supported_dex_length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length
-        if (!supported_dex_length || supported_dex_length <= 0) {
-            return null;
-        }
-        return this.zrcTokenPropertiesListMap_[ticker].supported_dex[0];
     }
 
     bindViewChartErrorDataNotAvailable() {
@@ -467,7 +458,7 @@ class PriceChartStatus {
 
     bindViewPriceTextInformation(ticker) {
         // If the ticker supported dex is none, skip
-        let mainDexName = this.getMainDexName(ticker);
+        let mainDexName = getMainDexName(ticker);
         if (!mainDexName) {
             return;
         }
@@ -707,7 +698,7 @@ class PriceChartStatus {
             return;
         }
 
-        let mainDexName = this.getMainDexName(this.historicalPriceData_.ticker);
+        let mainDexName = getMainDexName(this.historicalPriceData_.ticker);
         if (!mainDexName) {
             this.bindViewChartErrorDataNotAvailable();
             return;
@@ -881,6 +872,10 @@ if (typeof exports !== 'undefined') {
     if (typeof CONST_VIEWBLOCK_LOGO_DARK_SUFFIX === 'undefined') {
         UtilsConstants = require('../utils_constants.js');
         CONST_VIEWBLOCK_LOGO_DARK_SUFFIX = UtilsConstants.CONST_VIEWBLOCK_LOGO_DARK_SUFFIX;
+    }
+    if (typeof getMainDexName === 'undefined') {
+        UtilsDex = require('../utils_dex.js');
+        getMainDexName = UtilsDex.getMainDexName;
     }
 
     exports.PriceChartStatus = PriceChartStatus;

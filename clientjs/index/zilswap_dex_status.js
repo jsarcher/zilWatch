@@ -251,23 +251,18 @@ class ZilswapDexStatus {
      * Try to get zrc price from zilswap first, and then fallback to other dexes if there is no liquidity in zilswap
      */
     getZrcPriceInZilWithFallback(zrcSymbol) {
-        // TODO: Remove the manual guard for dXCAD, this is to guard showing
-        // zilswap price with low liquidity.
-        if (zrcSymbol !== 'dXCAD' && zrcSymbol !== 'zBRKL') {
-            let zilswapZrcPriceInZil = this.getZrcPriceInZil(zrcSymbol);
-            if (zilswapZrcPriceInZil) {
-                return zilswapZrcPriceInZil;
+        if (getMainDexName(zrcSymbol) === 'xcaddex' && this.xcadDexStatus_) {
+            // Proxy get from XCAD dex
+            let zrcPriceInXcad = this.xcadDexStatus_.getZrcPriceInXcad(zrcSymbol);
+            let xcadPairPublicStatus = this.zilswapPairPublicStatusMap_['XCAD'];
+            if (zrcPriceInXcad && xcadPairPublicStatus) {
+                return xcadPairPublicStatus.zrcTokenPriceInZil * zrcPriceInXcad;
             }
         }
 
-        if (!this.xcadDexStatus_) {
-            return null;
-        }
-        // Proxy get from XCAD dex
-        let zrcPriceInXcad = this.xcadDexStatus_.getZrcPriceInXcad(zrcSymbol);
-        let xcadPairPublicStatus = this.zilswapPairPublicStatusMap_['XCAD'];
-        if (zrcPriceInXcad && xcadPairPublicStatus) {
-            return xcadPairPublicStatus.zrcTokenPriceInZil * zrcPriceInXcad;
+        let zilswapZrcPriceInZil = this.getZrcPriceInZil(zrcSymbol);
+        if (zilswapZrcPriceInZil) {
+            return zilswapZrcPriceInZil;
         }
         return null;
     }
@@ -284,23 +279,18 @@ class ZilswapDexStatus {
      * Try to get zrc price from zilswap first, and then fallback to other dexes if there is no liquidity in zilswap
      */
     getZrcPriceInZil24hAgoWithFallback(zrcSymbol) {
-        // TODO: Remove the manual guard for dXCAD, this is to guard showing
-        // zilswap price with low liquidity.
-        if (zrcSymbol !== 'dXCAD' && zrcSymbol !== 'zBRKL') {
-            let zilswapZrcPriceInZil = this.getZrcPriceInZil24hAgo(zrcSymbol);
-            if (zilswapZrcPriceInZil) {
-                return zilswapZrcPriceInZil;
+        if (getMainDexName(zrcSymbol) === 'xcaddex' && this.xcadDexStatus_) {
+            // Proxy get from XCAD dex
+            let zrcPriceInXcad = this.xcadDexStatus_.getZrcPriceInXcad24hAgo(zrcSymbol);
+            let xcadPairPublicStatus = this.zilswapPairPublicStatus24hAgoMap_['XCAD'];
+            if (zrcPriceInXcad && xcadPairPublicStatus) {
+                return xcadPairPublicStatus.zrcTokenPriceInZil * zrcPriceInXcad;
             }
         }
 
-        if (!this.xcadDexStatus_) {
-            return null;
-        }
-        // Proxy get from XCAD dex
-        let zrcPriceInXcad = this.xcadDexStatus_.getZrcPriceInXcad24hAgo(zrcSymbol);
-        let xcadPairPublicStatus = this.zilswapPairPublicStatus24hAgoMap_['XCAD'];
-        if (zrcPriceInXcad && xcadPairPublicStatus) {
-            return xcadPairPublicStatus.zrcTokenPriceInZil * zrcPriceInXcad;
+        let zilswapZrcPriceInZil = this.getZrcPriceInZil24hAgo(zrcSymbol);
+        if (zilswapZrcPriceInZil) {
+            return zilswapZrcPriceInZil;
         }
         return null;
     }
@@ -917,6 +907,10 @@ if (typeof exports !== 'undefined') {
     if (typeof bindViewPercentChangeColorContainer === 'undefined') {
         BindView = require('./bind_view.js');
         bindViewPercentChangeColorContainer = BindView.bindViewPercentChangeColorContainer;
+    }
+    if (typeof getMainDexName === 'undefined') {
+        UtilsDex = require('../utils_dex.js');
+        getMainDexName = UtilsDex.getMainDexName;
     }
 
     exports.ZilswapDexStatus = ZilswapDexStatus;

@@ -151,6 +151,9 @@ function drawAllBarCharts() {
 var currentActiveAccountBech32 = null;
 
 function refreshMainContentData(account) {
+    if (!account) {
+        return;
+    }
     let walletAddressBase16 = account.base16.toLowerCase();
     let walletAddressBech32 = account.bech32;
 

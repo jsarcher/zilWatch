@@ -53,8 +53,11 @@ class SimpleChartStatus {
             /* successCallback= */
             function (data) {
                 try {
-                    self.simpleAllTokensData_.data.dXCAD = data.data.dXCAD;
-                    self.simpleAllTokensData_.data.zBRKL = data.data.zBRKL;
+                    for (let ticker in data.data) {
+                        if (getMainDexName(ticker) === 'xcaddex') {
+                            self.simpleAllTokensData_.data[ticker] = data.data[ticker];
+                        }
+                    }
                 } catch (err) {
                     console.log('dXCAD doesnt exist! ' + err.message);
                 }
@@ -162,6 +165,10 @@ if (typeof exports !== 'undefined') {
     if (typeof isCurrentDarkMode === 'undefined') {
         UtilsTheme = require('../utils_theme.js');
         isCurrentDarkMode = UtilsTheme.isCurrentDarkMode;
+    }
+    if (typeof getMainDexName === 'undefined') {
+        UtilsDex = require('../utils_dex.js');
+        getMainDexName = UtilsDex.getMainDexName;
     }
 
     exports.SimpleChartStatus = SimpleChartStatus;

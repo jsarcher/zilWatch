@@ -22,19 +22,23 @@ class ZilswapZrcPrice24hLowHighStatus {
         this.zrcTokenPrice24hLowMap_ = {};
         if (zrcTokenPrice24hLowData) {
             this.zrcTokenPrice24hLowMap_ = zrcTokenPrice24hLowData;
-            // TODO: This is a hack for dXCAD. Fix this.
             if (xcadDexZrcTokenPriceInXcad24hLowData) {
-                this.zrcTokenPrice24hLowMap_.dXCAD = xcadDexZrcTokenPriceInXcad24hLowData.dXCAD
-                this.zrcTokenPrice24hLowMap_.zBRKL = xcadDexZrcTokenPriceInXcad24hLowData.zBRKL
+                for (let ticker in xcadDexZrcTokenPriceInXcad24hLowData) {
+                    if (getMainDexName(ticker) === 'xcaddex') {
+                        this.zrcTokenPrice24hLowMap_[ticker] = xcadDexZrcTokenPriceInXcad24hLowData[ticker];
+                    }
+                }
             }
         }
         this.zrcTokenPrice24hHighMap_ = {};
         if (zrcTokenPrice24hHighData) {
             this.zrcTokenPrice24hHighMap_ = zrcTokenPrice24hHighData;
-            // TODO: This is a hack for dXCAD. Fix this.
             if (xcadDexZrcTokenPriceInXcad24hHighData) {
-                this.zrcTokenPrice24hHighMap_.dXCAD = xcadDexZrcTokenPriceInXcad24hHighData.dXCAD
-                this.zrcTokenPrice24hHighMap_.zBRKL = xcadDexZrcTokenPriceInXcad24hHighData.zBRKL
+                for (let ticker in xcadDexZrcTokenPriceInXcad24hHighData) {
+                    if (getMainDexName(ticker) === 'xcaddex') {
+                        this.zrcTokenPrice24hHighMap_[ticker] = xcadDexZrcTokenPriceInXcad24hHighData[ticker];
+                    }
+                }
             }
         }
 
@@ -53,8 +57,7 @@ class ZilswapZrcPrice24hLowHighStatus {
             let zrcPrice24hLow = parseFloat(this.zrcTokenPrice24hLowMap_[ticker]);
             let zrcPrice24hHigh = parseFloat(this.zrcTokenPrice24hHighMap_[ticker]);
 
-            // TODO: This is a hack for dXCAD. Fix this.
-            if (ticker === 'dXCAD' || ticker === 'zBRKL') {
+            if (getMainDexName(ticker) === 'xcaddex') {
                 if (!this.zilswapDexStatus_) {
                     continue;
                 }
@@ -134,13 +137,19 @@ class ZilswapZrcPrice24hLowHighStatus {
             function (data) {
                 let currZrcTokenPrice24hLowData = data['low'];
                 if (currZrcTokenPrice24hLowData) {
-                    self.zrcTokenPrice24hLowMap_.dXCAD = currZrcTokenPrice24hLowData.dXCAD;
-                    self.zrcTokenPrice24hLowMap_.zBRKL = currZrcTokenPrice24hLowData.zBRKL;
+                    for (let ticker in currZrcTokenPrice24hLowData) {
+                        if (getMainDexName(ticker) === 'xcaddex') {
+                            self.zrcTokenPrice24hLowMap_[ticker] = currZrcTokenPrice24hLowData[ticker];
+                        }
+                    }
                 }
                 let currZrcTokenPrice24hHighData = data['high'];
                 if (currZrcTokenPrice24hHighData) {
-                    self.zrcTokenPrice24hHighMap_.dXCAD = currZrcTokenPrice24hHighData.dXCAD;
-                    self.zrcTokenPrice24hHighMap_.zBRKL = currZrcTokenPrice24hHighData.zBRKL;
+                    for (let ticker in currZrcTokenPrice24hHighData) {
+                        if (getMainDexName(ticker) === 'xcaddex') {
+                            self.zrcTokenPrice24hHighMap_[ticker] = currZrcTokenPrice24hHighData[ticker];
+                        }
+                    }
                 }
                 self.bindViewZrcPrice24hLowHigh();
                 onSuccessCallback();
@@ -176,6 +185,10 @@ if (typeof exports !== 'undefined') {
     if (typeof getNormalizedPercent === 'undefined') {
         TokenUtils = require('./token_utils.js');
         getNormalizedPercent = TokenUtils.getNormalizedPercent;
+    }
+    if (typeof getMainDexName === 'undefined') {
+        UtilsDex = require('../utils_dex.js');
+        getMainDexName = UtilsDex.getMainDexName;
     }
     if (typeof $ === 'undefined') {
         $ = global.jQuery = require('jquery');
