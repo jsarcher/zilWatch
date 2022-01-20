@@ -604,7 +604,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x31bFa2054B7199F936733f9054DBCE259a3c335a",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1xxl6yp2twxvljdnn87g9fk7wykdrcv66xdy4rc/logo",
     "decimals": 4,
-    "supported_dex": ["zilswap"],
+    "supported_dex": ["zilswap", "xcaddex"],
     "website": "https://www.lunrtoken.com/",
     "whitepaper": "https://www.lunrtoken.com/documents/lunr.pdf",
   },
@@ -1102,6 +1102,20 @@ const zrcStakingTokenPropertiesListMap = {
     "name": "dXCAD → dXCAD",
     "address": "zil15wtur23s2j76mzhv7ez69dvzyqhw54aerlwpna",
     "address_base16": "0xa397C1aA3054bdAD8AEcf645a2B582202EeA57b9",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
+  'dXCAD-OKI': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → OKI",
+    "address": "zil156v5hrvv25cdrxt06ahcnhc9ywuf8ewstqrl6w",
+    "address_base16": "0xA6994B8D8c5530D1996FD76F89DF0523b893E5D0",
     "website": "https://swap.xcadnetwork.com/pool-overview/",
     "state_attributes": {
       "reward_apr": "customXcadDex",
