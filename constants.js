@@ -1288,6 +1288,16 @@ const zrcStakingTokenPropertiesListMap = {
 }
 
 const nftTokenPropertiesListMap = {
+  'BEANEL': {
+    "ticker": "BEANEL",
+    "name": "Beanterra",
+    "address": "zil16265u7gexrwh6ph228eu9fk09sq0ze02yxvuvw",
+    "address_base16": "0xd2B54E791930dd7d06EA51f3c2A6Cf2c00F165EA",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil16265u7gexrwh6ph228eu9fk09sq0ze02yxvuvw/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://www.beanterra.io",
+  },
   'BEAR': {
     "ticker": "BEAR",
     "name": "The Bear Market",
@@ -1428,6 +1438,27 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": true,
     "website": "https://linktr.ee/CrazySoulArt",
+  },
+  // Currently token_uris are returning bad gateway
+  // 'RUC': {
+  //   "ticker": "RUC",
+  //   "name": "RoboUniCats",
+  //   "address": "zil1la546rxzupwmyftuxrxv0fgaj75gjlgu6gymc8",
+  //   "address_base16": "0xFf695d0cc2e05DB2257C30CCc7A51d97a8897d1c",
+  //   "logo_url": "https://meta.viewblock.io/ZIL.zil1la546rxzupwmyftuxrxv0fgaj75gjlgu6gymc8/logo",
+  //   "image_dict_path": ["image"],
+  //   "is_zilswap_ark_supported": false,
+  //   "website": "https://ruc.robounicats.com/",
+  // },
+  'RUCHEROES': {
+    "ticker": "RUCHEROES",
+    "name": "RoboUniCatsHeroes",
+    "address": "zil15sj86nc0a6uwyfzjar4rw75s2yxfy0zmf3wmt4",
+    "address_base16": "0xA4247D4F0FeEb8E22452E8Ea377A90510C923c5b",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil15sj86nc0a6uwyfzjar4rw75s2yxfy0zmf3wmt4/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": false,
+    "website": "https://ruc.robounicats.com/",
   },
   // From here onwards it's okimoto NFTs
   'APE': {

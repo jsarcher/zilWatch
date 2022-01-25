@@ -174,7 +174,7 @@ class NftCollectionStatus {
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            currUri,
+            CONST_INTERNAL_CORS_PROXY_PREFIX + currUri,
             /* successCallback= */
             function (data) {
                 if (!data) {
