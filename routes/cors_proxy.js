@@ -2,30 +2,31 @@ var express = require('express');
 var router = express.Router();
 
 const corsAnywhere = require('cors-anywhere');
-const apicache = require('apicache');
-const expressHttpProxy = require('express-http-proxy');
+const httpProxy = require('http-proxy');
 const CORS_PROXY_PORT = 8090;
 
 corsAnywhere.createServer({}).listen(CORS_PROXY_PORT, () => {
     console.log(
-        `Internal CORS Proxy server started at port ${CORS_PROXY_PORT}`
+        `Internal CORS Anywhere server started at port ${CORS_PROXY_PORT}`
     );
 });
 
-router.get('/*', cacheMiddleware());
-router.options('/*', cacheMiddleware());
-router.use(expressHttpProxy(`localhost:${CORS_PROXY_PORT}`));
+let apiProxy = httpProxy.createProxyServer({
+    target: {
+        host: 'localhost',
+        port: CORS_PROXY_PORT
+    }
+});
 
-function cacheMiddleware() {
-    const cacheOptions = {
-        statusCodes: {
-            include: [200]
-        },
-        defaultDuration: 60000,
-        appendKey: (req, res) => req.method
-    };
-    let cacheMiddleware = apicache.options(cacheOptions).middleware();
-    return cacheMiddleware;
-}
+router.get("/*", function (req, res) {
+    // Special handling for beanterra, it redirects to www which the cors proxy cannot handle here.
+    // We cannot find a way to redirect to our `localhostname/proxy/<redirected_path>`
+    // It always go to `localhostname/<redirected_path>`, which will be 404.
+    if (req.url.includes("/beanterra.io")) {
+        req.url = req.url.replace("/beanterra.io", "/www.beanterra.io")
+    }
+
+    apiProxy.web(req, res, {});
+});
 
 module.exports = router;
