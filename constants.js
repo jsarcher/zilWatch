@@ -1297,6 +1297,7 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://www.beanterra.io",
+    "is_need_uri_cors_proxy": true,
   },
   'BEAR': {
     "ticker": "BEAR",
@@ -1449,6 +1450,7 @@ const nftTokenPropertiesListMap = {
   //   "image_dict_path": ["image"],
   //   "is_zilswap_ark_supported": false,
   //   "website": "https://ruc.robounicats.com/",
+  //   "is_need_uri_cors_proxy": true,
   // },
   'RUCHEROES': {
     "ticker": "RUCHEROES",
@@ -1459,6 +1461,7 @@ const nftTokenPropertiesListMap = {
     "image_dict_path": ["image"],
     "is_zilswap_ark_supported": false,
     "website": "https://ruc.robounicats.com/",
+    "is_need_uri_cors_proxy": true,
   },
   // From here onwards it's okimoto NFTs
   'APE': {

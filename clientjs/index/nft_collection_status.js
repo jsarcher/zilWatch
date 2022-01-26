@@ -43,10 +43,14 @@ class NftCollectionStatus {
 
     computeAndBindViewSingleNft(nftTicker, singleNftAttr) {
         let imageDictPathArr = this.nftTokenPropertiesListMap_[nftTicker].image_dict_path;
+        let isNeedUriCorsProxy = false;
+        if ('is_need_uri_cors_proxy' in this.nftTokenPropertiesListMap_[nftTicker]) {
+            isNeedUriCorsProxy = this.nftTokenPropertiesListMap_[nftTicker].is_need_uri_cors_proxy;
+        }
         if (imageDictPathArr.length === 0) {
             this.bindViewSingleNft(nftTicker, singleNftAttr, singleNftAttr.uri);
         } else {
-            this.computeSingleNftImageRpc(nftTicker, singleNftAttr, imageDictPathArr);
+            this.computeSingleNftImageRpc(nftTicker, singleNftAttr, imageDictPathArr, isNeedUriCorsProxy);
         }
     }
 
@@ -165,16 +169,20 @@ class NftCollectionStatus {
             });
     }
 
-    computeSingleNftImageRpc(nftTicker, singleNftAttr, imageDictPathArr) {
+    computeSingleNftImageRpc(nftTicker, singleNftAttr, imageDictPathArr, isNeedUriCorsProxy) {
         // If URL doesn't start with http, it's an IPFS ID, we add the prefix.
         let currUri = singleNftAttr.uri;
         if (!currUri.startsWith('http')) {
             currUri = "https://gateway.ipfs.io/ipfs/" + currUri;
         }
+        // Only add CORS rerouting only for certain NFTs with custom API endpoints.
+        if (isNeedUriCorsProxy) {
+            currUri = CONST_INTERNAL_CORS_PROXY_PREFIX + currUri;
+        }
         let self = this;
         queryUrlGetAjax(
             /* urlToGet= */
-            CONST_INTERNAL_CORS_PROXY_PREFIX + currUri,
+            currUri,
             /* successCallback= */
             function (data) {
                 if (!data) {

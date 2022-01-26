@@ -22,7 +22,7 @@ const CONST_VIEWBLOCK_LOGO_DARK_SUFFIX = '?t=dark';
 
 const CONST_ZIL_LOGO_URL = 'https://meta.viewblock.io/ZIL/logo';
 
-const CONST_INTERNAL_CORS_PROXY_PREFIX = 'http://localhost:8091/';
+const CONST_INTERNAL_CORS_PROXY_PREFIX = CONST_ZILWATCH_ROOT_URL + '/proxy/';
 
 // For lightweight charts
 const CONST_WHITE_TRANSPARENT_RGBA_STRING = 'rgba(255, 255, 255, 0)';
