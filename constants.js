@@ -597,6 +597,17 @@ const zrcTokenPropertiesListMap = {
     "supported_dex": ["zilswap"],
     "telegram": "https://t.me/thehodltoken",
   },
+  'HOL': {
+    "ticker": "HOL",
+    "name": "Heroes of Lowhelm",
+    "address": "zil1n9z6pk3aca8rvndya2tfgmyexdsp8m44gpyrs3",
+    "address_base16": "0x9945A0dA3dc74e364dA4Ea96946C99336013EeB5",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1n9z6pk3aca8rvndya2tfgmyexdsp8m44gpyrs3/logo",
+    "decimals": 5,
+    "supported_dex": ["zilswap", "xcaddex"],
+    "website": "https://www.heroesoflowhelm.com",
+    "telegram": "https://t.me/heroesoflowhelm",
+  },
   'LUNR': {
     "ticker": "LUNR",
     "name": "Lunr",
