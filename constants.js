@@ -1150,6 +1150,20 @@ const zrcStakingTokenPropertiesListMap = {
       "staked": "stakers_total_bal",
     },
   },
+  'dXCAD-HOL': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → HOL",
+    "address": "zil17h6wvmr925df5jxaz3nc8nswca2gxc5pa64qu2",
+    "address_base16": "0xF5F4e66c65551a9a48Dd146783ce0EC754836281",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
   'dXCAD-OKI': {
     "ticker": "dXCAD",
     "name": "dXCAD → OKI",
