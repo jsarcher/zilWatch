@@ -14,7 +14,8 @@ corsAnywhere.createServer({}).listen(CORS_PROXY_PORT, () => {
 let apiProxy = httpProxy.createProxyServer({
     target: {
         host: 'localhost',
-        port: CORS_PROXY_PORT
+        port: CORS_PROXY_PORT,
+        changeOrigin: true
     }
 });
 
@@ -25,8 +26,14 @@ router.get("/*", function (req, res) {
     if (req.url.includes("/beanterra.io")) {
         req.url = req.url.replace("/beanterra.io", "/www.beanterra.io")
     }
-
-    apiProxy.web(req, res, {});
+    apiProxy.web(req, res, {}, function(err) {
+        console.log('CORS proxy error', err);
+        if (!res.headersSent) {
+            res.writeHead(500, { 'content-type': 'application/json' });
+        }
+        let json = { error: 'proxy_error', reason: err.message };
+        res.end(JSON.stringify(json));
+    });
 });
 
 module.exports = router;
