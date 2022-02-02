@@ -6,9 +6,10 @@
     "start": "npm run uglifyjs && npm run uglifycss && node ./bin/www",
     "test": "nyc mocha --parallel --recursive tests/ --timeout 30000",
     "t": "mocha tests/clientjs/index/aggregate_dex_lp_fee_reward_status.test.js --timeout 30000",
-    "uglifyjs": "npm run uglifyjs-index && npm run uglifyjs-theme",
+    "uglifyjs": "npm run uglifyjs-index && npm run uglifyjs-nft && npm run uglifyjs-theme",
     "uglifyjs-index": "uglifyjs clientjs/*.js clientjs/index/*.js --compress --mangle --output public/javascripts/main.index.min.js",
-    "uglifyjs-theme": "uglifyjs clientjs/utils_theme.js --compress --mangle --output public/javascripts/main.theme.min.js",
+    "uglifyjs-nft": "uglifyjs clientjs/*.js clientjs/nft_explorer/*.js --compress --mangle --output public/javascripts/main.nft.min.js", 
+    "uglifyjs-theme": "uglifyjs clientjs/utils_theme.js clientjs/utils_constants.js --compress --mangle --output public/javascripts/main.theme.min.js",
     "uglifycss": "uglifycss clientcss/*.css --ugly-comments --output public/stylesheets/main.min.css"
   },
   "dependencies": {

@@ -42,13 +42,22 @@ block content
     // Page content wrapper
     div(id='page-content-wrapper')
 
-      nav(class='navbar navbar-light bg-dynamic-1 justify-content-between')
-        button(class='sidebar-toggler navbar-toggler mr-1')
-          span(class='navbar-toggler-icon')
+      nav(class='navbar navbar-expand-lg navbar-light bg-dynamic-1 justify-content-between')
+        button(class='sidebar-toggler mr-1')
+          i(class='fa fa-line-chart my-1')
 
-        a(class='navbar-brand zilwatch-navbar-brand')
+        a(class='navbar-brand zilwatch-navbar-brand' href='/')
           img(src='/images/zilWatch-02.svg' width='30' height='30' class='d-inline-block align-top mr-2' alt='zilWatch')
           = 'zilWatch'
+
+        button(class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation')
+          span(class='navbar-toggler-icon')
+        div(class='collapse navbar-collapse' id='navbarNavDropdown')
+          ul(class='navbar-nav')
+            li(class='nav-item active')
+              a(class='nav-link' href='/')='Dashboard'
+            li(class='nav-item')
+              a(class='nav-link' href='/nft-explorer')='NFT Explorer'
 
         select(id='currency_selector' class='custom-select my-2 my-sm-0 ml-auto mr-2')
           each symbol, code in currencyMap
@@ -1162,7 +1171,7 @@ block content
                                     td(style='text-align: right; white-space: nowrap;' )
                                 tr
                                   td(class='text-secondary' style='text-align: left; white-space: nowrap;' )
-                                    - let userFriendlyStakingCategoryName = (stakingCategoryId.charAt(0).toUpperCase() + stakingCategoryId.slice(1)).replace("_", " ");
+                                    - let userFriendlyStakingCategoryName = (stakingCategoryId.charAt(0).toUpperCase() + stakingCategoryId.slice(1)).replace('_', ' ');
                                     span=userFriendlyStakingCategoryName
                                   if 'website' in stakingTokenProperty
                                     td(colspan=2 style='text-align: right; white-space: nowrap;' )
@@ -1288,7 +1297,7 @@ block content
                     if isNewCharStart 
                       - currTokenStartingAlphabet = tokenProperties.ticker.charAt(0).toUpperCase();
                       tr(style=trStyle)
-                        th(colspan=3 style="border-top: 1px solid var(--light-alpha-10);")
+                        th(colspan=3 style='border-top: 1px solid var(--light-alpha-10);')
                           span=currTokenStartingAlphabet
 
                     tr(id=ticker+'_token_list_row' class='token-list-row' data-ticker=ticker style=trStyle)
@@ -1544,7 +1553,8 @@ block script
 
     const priceChartStatus = new PriceChartStatus(zrcTokenPropertiesListMap, zrcStakingTokenPropertiesListMap, targetTokenSymbol, coinPriceStatus, zilswapDexStatus, xcadDexStatus, aggregateDexTradeVolumeStatus, zilswapDexRewardData, xcadDexRewardData, zrcStakingRewardData);
 
-    const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap);
+    const utilsNft = new UtilsNft(nftTokenPropertiesListMap);
+    const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap, utilsNft);
     const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();
 
     function getRandomInt(max) {

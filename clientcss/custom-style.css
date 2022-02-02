@@ -2,6 +2,10 @@
   background-color: var(--bg-dynamic-1)!important
 }
 
+.bg-dynamic-2 {
+  background-color: var(--bg-dynamic-2);
+}
+
 .bg-dynamic-3 {
   background-color: var(--bg-dynamic-3);
 }
@@ -474,6 +478,21 @@ body.sidenav-shown #wrapper #sidebar-wrapper {
   #sidebar-wrapper .list-group {
     width: 23rem;
   }
+}
+
+.sidebar-toggler {
+  padding: .25rem .75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  color: var(--text-color);
+  border-color: var(--light-alpha-10)
+}
+
+.sidebar-toggler:focus, .sidebar-toggler:hover {
+  text-decoration: none
 }
 
 .sidebar-toggler:hover {

@@ -4,7 +4,7 @@ var visitor = require('../libraries/universal_analytics_client.js');
 var express = require('express');
 var router = express.Router();
 
-/* GET api for individual token price, directly queried from redis. */
+/* GET api for NFTs owned by an address, directly queried from redis. */
 router.get('/', function (req, res, next) {
     visitor.pageview("/api/nft" + req.url, "https://zilwatch.io", "NFT API").send();
 
@@ -32,6 +32,32 @@ router.get('/', function (req, res, next) {
                             data_dict_result[nftTicker] = currNftTickerCollections[walletAddressBase16LowerCase];
                         }
                     }
+                } catch (ex) {
+                    console.log(ex);
+                }
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(data_dict_result));
+        });
+});
+
+/* GET api for NFTs owned by an address, directly queried from redis. */
+router.get('/uris', function (req, res, next) {
+    visitor.pageview("/api/nft" + req.url, "https://zilwatch.io", "NFT API").send();
+
+    let nftTicker = req.query.nft_ticker;
+    if (!nftTicker) {
+        res.send("Unsupported query parameters!");
+        return;
+    }
+
+    redisClient.get("all_nft_uris",
+        function (err, reply) {
+            let data_dict_result = {};
+            if (!err && reply) {
+                try {
+                    let data_dict = JSON.parse(reply);
+                    data_dict_result = data_dict[nftTicker];
                 } catch (ex) {
                     console.log(ex);
                 }
