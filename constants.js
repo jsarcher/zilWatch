@@ -1597,6 +1597,16 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported": false,
     "website": "https://zilloween.heygo.me",
   },
+  'EA': {
+    "ticker": "EA",
+    "name": "Everyday Art",
+    "address": "zil1eeunaphhw5kujp5rdzqvhtgasaumv5fg5gz794",
+    "address_base16": "0xCE793E86f7752DC906836880CbaD1d8779b65128",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil1eeunaphhw5kujp5rdzqvhtgasaumv5fg5gz794/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://www.spardawallet.com/marketsearch.html?CE793E86f7752DC906836880CbaD1d8779b65128",
+  },
   'EOZ': {
     "ticker": "EOZ",
     "name": "Elements of Zilliqa",
@@ -1677,6 +1687,16 @@ const nftTokenPropertiesListMap = {
     "is_zilswap_ark_supported": true,
     "website": "https://zilswap.io/ark/collections/zil1qq5xx3jh26h2nnfynz5ljds0vpu8pp4n6c2xkk",
   },
+  'MS': {
+    "ticker": "MS",
+    "name": "Meta Skull",
+    "address": "zil15efm3nscdqs62pmu7jdh3e03882exltlsre0a7",
+    "address_base16": "0xa653b8CE186821A5077Cf49b78E5F139D5937d7F",
+    "logo_url": "https://meta.viewblock.io/ZIL.zil15efm3nscdqs62pmu7jdh3e03882exltlsre0a7/logo",
+    "image_dict_path": ["image"],
+    "is_zilswap_ark_supported": true,
+    "website": "https://www.spardawallet.com/marketsearch.html?a653b8CE186821A5077Cf49b78E5F139D5937d7F",
+  },
   'NFTA': {
     "ticker": "NFTA",
     "name": "NFT Natalie",
@@ -1714,7 +1734,7 @@ const nftTokenPropertiesListMap = {
     "address_base16": "0x0b88ABBD61ea5e854E1d3D0ECc78436345AB3606",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1pwy2h0tpaf0g2nsa858vc7zrvdz6kdsx4gdzlk/logo",
     "image_dict_path": ["image"],
-    "is_zilswap_ark_supported": false,
+    "is_zilswap_ark_supported": true,
     "website": "https://www.spardawallet.com/marketsearch.html?0b88ABBD61ea5e854E1d3D0ECc78436345AB3606",
   },
   'SMOOTHIE': {
