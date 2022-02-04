@@ -202,6 +202,20 @@ function refreshMainContentData(account) {
 
     // (10) Get ARK profile pic
     computeArkProfilePic(walletAddressBase16);
+
+    // (11) Set wallet early supporter event
+    computeEarlySupporterEvent(walletAddressBase16)
+}
+
+function computeEarlySupporterEvent(walletAddressBase16) {
+    earlySupporterEventStatus.setWalletAddressBase16(walletAddressBase16);
+    earlySupporterEventStatus.computeDataRpc(
+        /* beforeRpcCallback= */
+        function () {},
+        /* onSuccessCallback= */
+        function () {},
+        /* onErrorCallback= */
+        function () {});
 }
 
 function computeArkProfilePic(walletAddressBase16) {

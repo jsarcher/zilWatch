@@ -79,6 +79,31 @@ block content
 
         hr
 
+        div(class='alert alert-info')
+          h3='Early supporter surprise event '
+            a(href='https://zilwatch.medium.com/early-supporter-surprise-event-788be658238b' target='_blank' style='color: var(--cyan);')='(details)'
+          div(id='early_supporter_event_ended' style='display: none;')
+            p='Registration has ended!  Stay tuned for more announcement next month! :D'
+          div(id='early_supporter_event_already_registered' style='display: none;')
+            p='Your wallet is already registered! Stay tuned for more announcement next month! :D'
+          div(id='early_supporter_event_register')
+            p='Registration closing in '
+              b(id='early_supporter_event_timer_countdown')='N.A.'
+              =' -- Contract: '
+              a(id='early_supporter_event_contract_anchor' href='' target='_blank' style='color: var(--cyan);')='N.A.'
+            p='Simply connect your wallet, and register using the button below!'
+            p
+              button(id='early_supporter_event_register_button' class='btn btn-info')= 'Register wallet'
+              p(id='early_supporter_event_register_message' style='display:none;')
+            p 
+              i
+                b='Note:'
+                =' There is '
+                b='no fee'
+                =' for registration (other than gas fee). Before registering, make sure you are on '
+                b='https://zilwatch.io'
+        hr
+
         div(class='row accordion')
 
           div(class='col-xl-12' style='padding: 0;')
@@ -1567,6 +1592,8 @@ block script
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap, utilsNft);
     const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();
 
+    const earlySupporterEventStatus = new EarlySupporterEventStatus();
+
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
@@ -1574,6 +1601,7 @@ block script
     function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
       console.log('NewBlock-%s: %s', blockchainStatusNotifyType, blockNum);
 
+      earlySupporterEventStatus.onNewBlockStatusChange(blockNum);
       swapStatus.onNewBlockStatusChange(blockNum, txHashArr);
 
       // Only refresh if the callback is from a websocket, i.e., a notification after the first load.
