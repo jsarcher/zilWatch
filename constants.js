@@ -1248,6 +1248,53 @@ const zrcStakingTokenPropertiesListMap = {
       "staked": "stakers_total_bal",
     },
   },
+  'FEES-BACHELORS': {
+    "ticker": "FEES",
+    "name": "Bachelors",
+    "address": "zil19hl9kaq3ddpqlr58qy8ewn9vcyueundmx22uyp",
+    "address_base16": "0x2DfE5b74116b420F8E87010f974CACc1399E4dbB",
+    "website": "https://unifees.io/stakebachelors/",
+    "state_attributes": {
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers",
+      "unclaimed": "pendingRewards",
+      "pending_withdrawal": "removeStaker",
+    }
+  },
+  'FEES-MASTERS': {
+    "ticker": "FEES",
+    "name": "Masters",
+    "address": "zil1yvnanl43330kfw272vxgu7yucctt0sk5syejln",
+    "address_base16": "0x2327d9fEb18C5f64B95e530c8e789Cc616B7C2D4",
+    "website": "https://unifees.io/stakemasters/",
+    "state_attributes": {
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers",
+      "unclaimed": "pendingRewards",
+      "pending_withdrawal": "removeStaker",
+    }
+  },
+  'FEES-DOCTORAL': {
+    "ticker": "FEES",
+    "name": "Doctoral",
+    "address": "zil1t40vh32v888m9s9e9uzrhgc6kj4030urquvylt",
+    "address_base16": "0x5d5eCBC54C39cfB2C0b92f043BA31AB4aAF8BF83",
+    "website": "https://unifees.io/stakedoctoral/",
+    "state_attributes": {
+      "reward_apr": "rewardPercent",
+      "unbonding_days": "unstakeDays",
+    },
+    "state_attributes_amount": {
+      "staked": "removeStaker",
+      "unclaimed": "pendingRewards",
+    }
+  },
   'OKIPAD': {
     "ticker": "OKI",
     "name": "Okipad",
