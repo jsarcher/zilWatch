@@ -19,6 +19,9 @@ class ZilswapDexStatus {
         this.zrcTokenPropertiesListMap_ = zrcTokenPropertiesListMap; // Refer to constants.js for definition
         this.coinPriceStatus_ = coinPriceStatus;
 
+        this.zilAndZrcTokenPropertiesListMap_ = JSON.parse(JSON.stringify(zrcTokenPropertiesListMap));
+        this.zilAndZrcTokenPropertiesListMap_['ZIL'] = { 'supported_dex' : ['xcaddex'] };
+
         // Other Dexes to integrate
         this.xcadDexStatus_ = xcadDexStatus;
 
@@ -61,6 +64,10 @@ class ZilswapDexStatus {
             if (this.zilswapDexSmartContractState24hAgoData_ &&
                 this.zilswapDexSmartContractState24hAgoData_.result &&
                 this.zilswapDexSmartContractState24hAgoData_.result.total_contributions) {
+                return true;
+            }
+            if (this.xcadDexStatus_ &&
+                this.xcadDexStatus_.has24hAgoData()) {
                 return true;
             }
         } catch (ex) {
@@ -521,7 +528,7 @@ class ZilswapDexStatus {
             zilPriceInFiat24hAgoFloat = this.coinPriceStatus_.getCoinPriceFiat24hAgo('ZIL');
         }
 
-        for (let ticker in this.zrcTokenPropertiesListMap_) {
+        for (let ticker in this.zilAndZrcTokenPropertiesListMap_) {
 
             // To get ZilswapLp balance and Total pool status
             let zilswapSinglePairPersonalStatus = this.getZilswapPairPersonalStatus(ticker);
@@ -837,11 +844,9 @@ class ZilswapDexStatus {
 
     resetPersonalView() {
         $('#lp_container').hide();
-        for (let ticker in this.zrcTokenPropertiesListMap_) {
+        for (let ticker in this.zilAndZrcTokenPropertiesListMap_) {
 
-            let length = this.zrcTokenPropertiesListMap_[ticker].supported_dex.length;
-            for (let i = 0; i < length; i++) {
-                let dexName = this.zrcTokenPropertiesListMap_[ticker].supported_dex[i];
+            for (let dexName of this.zilAndZrcTokenPropertiesListMap_[ticker].supported_dex) {
 
                 $('#' + dexName + '_' + ticker + '_lp_container').hide();
 

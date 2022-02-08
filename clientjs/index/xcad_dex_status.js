@@ -45,6 +45,20 @@ class XcadDexStatus {
         return false;
     }
 
+    hasBalanceXcadZilData() {
+        try {
+            if (this.xcadDexSmartContractStateData_ &&
+                this.xcadDexSmartContractStateData_.result &&
+                this.xcadDexSmartContractStateData_.result.balances &&
+                this.xcadDexSmartContractStateData_.result.total_contributions) {
+                return true;
+            }
+        } catch (ex) {
+            console.log(ex);
+        }
+        return false;
+    }
+
     has24hAgoData() {
         try {
             if (this.xcadDexSmartContractState24hAgoData_ &&
@@ -77,6 +91,7 @@ class XcadDexStatus {
     }
 
     computeXcadPairPublicPersonalStatusMap() {
+        this.computeXcadZilPairPublicPersonalStatusMap();
         // Current data
         if (!this.xcadDexSmartContractStateData_) {
             return;
@@ -142,6 +157,83 @@ class XcadDexStatus {
             // Set personal data
             this.xcadPairPersonalStatus24hAgoMap_[key] = getXcadSinglePairPersonalStatus(walletShareRatio24hAgo, xcadSinglePairPublicStatus24hAgo);
         }
+    }
+
+    /**
+     * Private method, should be called by the computeXcadPairPublicPersonalStatusMap() public method
+     */
+    computeXcadZilPairPublicPersonalStatusMap() {
+        // Current data
+        if (!this.xcadDexSmartContractStateData_) {
+            return;
+        }
+        let hasBalanceXcadZilData = this.hasBalanceXcadZilData();
+
+        // =========== Current Data ===============
+        let xcadTokenAddressBase16 = this.xcadTokenAddressBase16_.toLowerCase();
+        
+        // To get pool status and zrc token price in ZIL, this is using Zilswap helper method on purpose, because they are the same
+        let zilZrcPairPublicStatus = getZilswapSinglePairPublicStatusFromDexState(this.xcadDexSmartContractStateData_, xcadTokenAddressBase16, this.xcadTokenDecimals_);
+        if (!zilZrcPairPublicStatus) {
+            return;
+        }
+        // Need to convert to XCAD format 
+        let xcadZilSinglePairPublicStatus = getXcadSinglePairPublicStatus(/* xcad= */ zilZrcPairPublicStatus.totalPoolZrcTokenAmount, /* zil= */ zilZrcPairPublicStatus.totalPoolZilAmount)
+        if (!xcadZilSinglePairPublicStatus) {
+            return;
+        }
+        // Set public data
+        this.xcadPairPublicStatusMap_['ZIL'] = xcadZilSinglePairPublicStatus;
+
+        // Compute personal status
+        if (!hasBalanceXcadZilData || !this.walletAddressBase16_) {
+            return;
+        }
+        // This is using Zilswap helper method on purpose, because they are the same
+        let walletShareRatio = getZilswapSinglePairShareRatio(this.xcadDexSmartContractStateData_, xcadTokenAddressBase16, this.walletAddressBase16_);
+        if (!walletShareRatio) {
+            return;
+        }
+
+        // Set personal data
+        this.xcadPairPersonalStatusMap_['ZIL'] = getXcadSinglePairPersonalStatus(walletShareRatio, xcadZilSinglePairPublicStatus);
+
+        // =========== 24h Ago Data ===============
+        // 24h Ago data
+        if (!this.xcadDexSmartContractState24hAgoData_) {
+            return;
+        }
+        if (hasBalanceXcadZilData) {
+            // This is to assume user have the same liquidity contribution amount 24h ago
+            this.xcadDexSmartContractState24hAgoData_.result.balances = this.xcadDexSmartContractStateData_.result.balances;
+        }
+
+        // Regular case if it's a regular token
+        let zilZrcPairStatus24hAgo = getZilswapSinglePairPublicStatusFromDexState(this.xcadDexSmartContractState24hAgoData_, xcadTokenAddressBase16, this.xcadTokenDecimals_);
+        if (!zilZrcPairStatus24hAgo) {
+            return;
+        }
+        // Need to convert to XCAD format 
+        let xcadZilSinglePairPublicStatus24hAgo = getXcadSinglePairPublicStatus(/* xcad= */ zilZrcPairStatus24hAgo.totalPoolZrcTokenAmount, /* zil= */ zilZrcPairStatus24hAgo.totalPoolZilAmount)
+
+        if (!xcadZilSinglePairPublicStatus24hAgo) {
+            return;
+        }
+        // Set public data
+        this.xcadPairPublicStatus24hAgoMap_['ZIL'] = xcadZilSinglePairPublicStatus24hAgo;
+
+        if (!hasBalanceXcadZilData || !this.walletAddressBase16_) {
+            return;
+        }
+
+        // This is using Zilswap helper method on purpose, because they are the same
+        let walletShareRatio24hAgo = getZilswapSinglePairShareRatio(this.xcadDexSmartContractState24hAgoData_, xcadTokenAddressBase16, this.walletAddressBase16_);
+        if (!walletShareRatio24hAgo) {
+            return;
+        }
+
+        // This is using Zilswap helper method on purpose, because they are the same
+        this.xcadPairPersonalStatus24hAgoMap_['ZIL'] = getXcadSinglePairPersonalStatus(walletShareRatio24hAgo, xcadZilSinglePairPublicStatus24hAgo);
     }
 
     /**
@@ -216,8 +308,8 @@ class XcadDexStatus {
      */
     getAllPersonalBalanceInXcad() {
         let totalXcadAmount = 0;
-        for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let currPersonalStatus = this.getXcadPairPersonalStatus(ticker);
+        for (let ticker in this.xcadPairPersonalStatusMap_) {
+            let currPersonalStatus = this.xcadPairPersonalStatusMap_[ticker];
             if (!currPersonalStatus) {
                 continue;
             }
@@ -233,8 +325,8 @@ class XcadDexStatus {
      */
     getAllPersonalBalanceInXcad24hAgo() {
         let totalXcadAmount = 0;
-        for (let ticker in this.zrcTokenPropertiesListMap_) {
-            let currPersonalStatus = this.getXcadPairPersonalStatus24hAgo(ticker);
+        for (let ticker in this.xcadPairPersonalStatus24hAgoMap_) {
+            let currPersonalStatus = this.xcadPairPersonalStatus24hAgoMap_[ticker];
             if (!currPersonalStatus) {
                 continue;
             }
@@ -320,8 +412,14 @@ if (typeof exports !== 'undefined') {
         getPercentChange = TokenUtils.getPercentChange;
         getXcadSinglePairShareRatio = TokenUtils.getXcadSinglePairShareRatio;
         getXcadSinglePairPublicStatusFromDexState = TokenUtils.getXcadSinglePairPublicStatusFromDexState;
+        getXcadSinglePairPublicStatus = TokenUtils.getXcadSinglePairPublicStatus;
         getXcadSinglePairPersonalStatus = TokenUtils.getXcadSinglePairPersonalStatus;
         XcadSinglePairPublicStatus = TokenUtils.XcadSinglePairPublicStatus;
+
+        ZilswapSinglePairPublicStatus = TokenUtils.ZilswapSinglePairPublicStatus;
+        getZilswapSinglePairShareRatio = TokenUtils.getZilswapSinglePairShareRatio;
+        getZilswapSinglePairPersonalStatus = TokenUtils.getZilswapSinglePairPersonalStatus;
+        getZilswapSinglePairPublicStatusFromDexState = TokenUtils.getZilswapSinglePairPublicStatusFromDexState;
     }
     exports.XcadDexStatus = XcadDexStatus;
 }

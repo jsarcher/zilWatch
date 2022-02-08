@@ -287,6 +287,10 @@ class XcadSinglePairPersonalStatus {
     }
 }
 
+function getXcadSinglePairPublicStatus(totalPoolXcadAmount, totalPoolZrcTokenAmount) {
+    return new XcadSinglePairPublicStatus(totalPoolXcadAmount, totalPoolZrcTokenAmount);
+}
+
 function getXcadSinglePairPersonalStatus(shareRatio, xcadSingleTokenPublicStatus) {
     return new XcadSinglePairPersonalStatus(shareRatio, xcadSingleTokenPublicStatus);
 }
@@ -304,5 +308,6 @@ if (typeof exports !== 'undefined') {
     exports.getXcadSinglePairShareRatio = getXcadSinglePairShareRatio;
     exports.XcadSinglePairPublicStatus = XcadSinglePairPublicStatus;
     exports.XcadSinglePairPersonalStatus = XcadSinglePairPersonalStatus;
+    exports.getXcadSinglePairPublicStatus = getXcadSinglePairPublicStatus;
     exports.getXcadSinglePairPersonalStatus = getXcadSinglePairPersonalStatus;
 }

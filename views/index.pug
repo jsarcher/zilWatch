@@ -1010,12 +1010,17 @@ block content
                         if !(ticker in zrcTokenPropertiesListMap)
                           - continue
                         - let tokenProperties = zrcTokenPropertiesListMap[ticker]
+                        - let tokenTicker = tokenProperties.ticker;
 
-                        if !(tokenProperties.supported_dex.includes(supportedDexName))
+                        //- TODO: This is a hack to proxy XCAD-ZIL pair in XCAD dex. We use wZIL as a proxy
+                        if (tokenTicker == 'wZIL' && supportedDexName == 'xcaddex')
+                          - tokenTicker = 'ZIL';
+                        else if !(tokenProperties.supported_dex.includes(supportedDexName))
                           - continue
 
                         - let baseTokenImgSrc = baseTokenTicker == 'ZIL' ? 'https://meta.viewblock.io/ZIL/logo' : zrcTokenPropertiesListMap[baseTokenTicker].logo_url;
-                        - let lpPrefix = supportedDexName + '_' + tokenProperties.ticker;
+                        - let pairTokenImgSrc = tokenTicker == 'ZIL' ? 'https://meta.viewblock.io/ZIL/logo' : zrcTokenPropertiesListMap[ticker].logo_url;
+                        - let lpPrefix = supportedDexName + '_' + tokenTicker;
 
                         div(id=lpPrefix+'_lp_container' class='col-lg-6' style='padding: 0; display: none')
                           div(class='box')
@@ -1023,10 +1028,10 @@ block content
                               tbody
                                 tr
                                   td(scope='row' style='text-align: left; white-space: nowrap; width: 45%;' )
-                                    img(height='18' width='18' src=tokenProperties.logo_url loading='lazy')
+                                    img(height='18' width='18' src=pairTokenImgSrc loading='lazy')
                                     img(height='18' width='18' src=baseTokenImgSrc loading='lazy')
-                                    span(class='font-weight-bold ml-2')= tokenProperties.ticker + '-' + baseTokenTicker
-                                    span(class=tokenProperties.ticker+'_price_zil ml-2 text-secondary')= 'Loading...'
+                                    span(class='font-weight-bold ml-2')= tokenTicker + '-' + baseTokenTicker
+                                    span(class=tokenTicker+'_price_zil ml-2 text-secondary')= 'Loading...'
                                     span(class='ml-1 text-secondary')= 'ZIL'
 
                                   td(style='text-align: right; white-space: nowrap; width: 40%;' )
@@ -1048,7 +1053,7 @@ block content
                                   tr
                                     td(scope='row' style='text-align: left; white-space: nowrap;' )
                                       span(id=lpPrefix+'_lp_token_balance_past_range_ago')
-                                      span(class='ml-1')= tokenProperties.ticker
+                                      span(class='ml-1')= tokenTicker
                                       span(class='ml-1')= '-'
                                       span(id=lpPrefix+'_lp_base_token_balance_past_range_ago' class='ml-1')
                                       span(class='ml-1')= baseTokenTicker
@@ -1059,7 +1064,7 @@ block content
                                 tr
                                   td(style='text-align: left; white-space: nowrap; width: 45%;' )
                                     span(id=lpPrefix+'_lp_token_balance')
-                                    span(id=lpPrefix+'_lp_token_balance_unit' class='ml-1')= tokenProperties.ticker
+                                    span(id=lpPrefix+'_lp_token_balance_unit' class='ml-1')= tokenTicker
                                     span(class='ml-1')= '-'
                                     span(id=lpPrefix+'_lp_base_token_balance' class='ml-1')
                                     span(id=lpPrefix+'_lp_base_token_balance_unit' class='ml-1')= baseTokenTicker
@@ -1084,13 +1089,15 @@ block content
                                     span(class='ml-1')= '%'
                                   td(style='text-align: right; white-space: nowrap;' )
 
-                                tr
-                                  td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
-                                    span= 'Est. ' + lpFeeRewardPercent + '% fee earned (24h)'
-                                  td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
-                                    span(id=lpPrefix+'_lp_pool_fee_reward_zil_past_range_period')= 'Loading...'
-                                    span(class='ml-1')= 'ZIL'
-                                  td(style='text-align: right; white-space: nowrap;' )
+                                //- TODO: This is a hack to not show LP information for ZIL Xcad dex
+                                if (tokenTicker != 'ZIL' || supportedDexName != 'xcaddex')
+                                  tr
+                                    td(class='text-secondary' style='text-align: left; white-space: nowrap; width: 45%;' )
+                                      span= 'Est. ' + lpFeeRewardPercent + '% fee earned (24h)'
+                                    td(class='text-secondary' style='text-align: right; white-space: nowrap; width: 55%;' )
+                                      span(id=lpPrefix+'_lp_pool_fee_reward_zil_past_range_period')= 'Loading...'
+                                      span(class='ml-1')= 'ZIL'
+                                    td(style='text-align: right; white-space: nowrap;' )
                 hr
 
               div(id='staking_container' style='display: none')
