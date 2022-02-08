@@ -8,7 +8,7 @@ class EarlySupporterEventStatus {
 
         this.defaultGasLimitZil_ = 10;
         this.defaultBlock_ = 99999999;
-        this.endBlock_ = this.defaultBlock_;
+        this.endBlock_ = 1805231;
 
         this.currentBlock_ = this.defaultBlock_;
 
@@ -29,6 +29,7 @@ class EarlySupporterEventStatus {
         try {
             let blockNumInt = parseInt(blockNum);
             this.currentBlock_ = blockNumInt;
+            this.computeAndBindViewTimer();
         } catch (err) {
             console.log(err);
         }
@@ -40,7 +41,13 @@ class EarlySupporterEventStatus {
         // Need to reset the attributes when wallet is changed.
         this.reset();
         this.walletAddressBase16_ = walletAddressBase16.toLowerCase();
-        this.computeAndBindView();
+        this.computeDataRpc(
+            /* beforeRpcCallback= */
+            function () {},
+            /* onSuccessCallback= */
+            function () {},
+            /* onErrorCallback= */
+            function () {});
     }
 
     reset() {
@@ -55,18 +62,6 @@ class EarlySupporterEventStatus {
         if (!this.scState_) {
             return;
         }
-        // Try get end block from sc state
-        try {
-            let endBlock = this.scState_.result.end_block;
-            let endBlockInt = parseInt(endBlock);
-            this.endBlock_ = endBlockInt;
-        } catch (err) {
-            console.log(err);
-        }
-
-        // Bind timer
-        this.computeAndBindViewTimer();
-
         // Check if current wallet is registered from sc state
         let isWalletRegistered = false;
         if (this.walletAddressBase16_) {
@@ -106,13 +101,16 @@ class EarlySupporterEventStatus {
     }
 
     computeDataRpc(beforeRpcCallback, onSuccessCallback, onErrorCallback) {
+        if (!this.walletAddressBase16_) {
+            return;
+        }
         beforeRpcCallback();
         let self = this;
         queryZilliqaApiAjax(
             /* method= */
-            "GetSmartContractState",
+            "GetSmartContractSubState",
             /* params= */
-            [this.earlySupporterAddressBase16_.substring(2)],
+            [this.earlySupporterAddressBase16_.substring(2), "map_wallets", [this.walletAddressBase16_]],
             /* successCallback= */
             function (data) {
                 self.scState_ = data;
