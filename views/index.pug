@@ -396,8 +396,10 @@ block content
 
             div(class='box-public')
               div(id='swap_content_header_container' class='card-header collapsed' data-toggle='collapse' href='#swap_content_container')
-                span(id='swap_content_header_title' class='card-title font-weight-bold')= 'Swap'
-                img(id='swap_content_header_image' class='ml-3' height='20' src='/images/zilswap_long_logo.svg' loading='lazy')
+                span(id='swap_content_header_title' class='mr-1 card-title font-weight-bold')= 'Swap'
+                span(class='small mx-1')='via'
+                img(id='swap_content_header_image' class='mx-1' height='20' src='/images/icon-zilswap.svg' loading='lazy')
+                span(class='small')='ZilSwap'
               div(id='swap_content_container' class='card-body collapse' style='padding: 0;')
 
                 div(class='swap-box-table')
