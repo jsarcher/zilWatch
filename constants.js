@@ -865,7 +865,7 @@ const zrcTokenPropertiesListMap = {
     "address_base16": "0x9Bd504b1445fdB8F4a643453ec1459bb9a2f988a",
     "logo_url": "https://meta.viewblock.io/ZIL.zil1n02sfv2ytldc7jnyx3f7c9zehwdzlxy2ykrhf9/logo",
     "decimals": 6,
-    "supported_dex": ["zilswap"],
+    "supported_dex": ["zilswap", "xcaddex"],
     "website": "https://www.straitsx.com/id",
   },
   'XSGD': {
@@ -1122,6 +1122,20 @@ const zrcStakingTokenPropertiesListMap = {
       "staked": "stakers_total_bal",
     },
   },
+  'dXCAD-DUCK': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → DUCK",
+    "address": "zil1m32y9rdszgr4ysu94vrmgx9l2s00ak47slsf3d",
+    "address_base16": "0xDC54428Db01207524385AB07b418bF541EfeDaBe",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
   'dXCAD-dXCAD': {
     "ticker": "dXCAD",
     "name": "dXCAD → dXCAD",
@@ -1239,6 +1253,20 @@ const zrcStakingTokenPropertiesListMap = {
     "name": "dXCAD → STREAM",
     "address": "zil1tvd73crh7ne8q260elunmlhuvqgt6gmsw3vn9y",
     "address_base16": "0x5B1bE8e077f4F2702B4fcFf93dfeFC6010Bd2370",
+    "website": "https://swap.xcadnetwork.com/pool-overview/",
+    "state_attributes": {
+      "reward_apr": "customXcadDex",
+      "unbonding_days": "lockup_cycle",
+    },
+    "state_attributes_amount": {
+      "staked": "stakers_total_bal",
+    },
+  },
+  'dXCAD-zBRKL': {
+    "ticker": "dXCAD",
+    "name": "dXCAD → zBRKL",
+    "address": "zil1j62693l6tts5ru0dn9x5lczdz93vg3p8y7nr9r",
+    "address_base16": "0x9695A2C7FA5ae141f1Ed994d4Fe04d1162c44427",
     "website": "https://swap.xcadnetwork.com/pool-overview/",
     "state_attributes": {
       "reward_apr": "customXcadDex",
