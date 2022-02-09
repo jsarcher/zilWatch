@@ -80,33 +80,23 @@ block content
         hr
 
         div(class='alert alert-info')
-          h3='Early supporter surprise event '
+          h3='Public $ZWT token sale '
             span='('
-            a(href='https://zilwatch.medium.com/early-supporter-surprise-event-788be658238b' target='_blank' style='color: var(--cyan);')='details'
-            span=', '
-            a(href='https://zilwatch.medium.com/zilwatch-whitepaper-1857834a0c6f' target='_blank' style='color: var(--cyan);')='whitepaper-ZILO'
+            a(href='https://zilwatch.medium.com/zilwatch-whitepaper-1857834a0c6f' target='_blank' style='color: var(--cyan);')='whitepaper'
             span=')'
+          
+          p='Public sale starts on Thursday, 10-Feb-2022, 8am UTC. Everyone can participate!'
 
-          div(id='early_supporter_event_ended' style='display: none;')
-            p='Registration has ended!  Stay tuned for more announcement next month! :D'
-          div(id='early_supporter_event_already_registered' style='display: none;')
-            p='Your wallet is already registered! Stay tuned for more announcement next month! :D'
-          div(id='early_supporter_event_register')
-            p='Registration closing in '
-              b(id='early_supporter_event_timer_countdown')='N.A.'
-              =' -- Contract: '
-              a(id='early_supporter_event_contract_anchor' href='' target='_blank' style='color: var(--cyan);')='N.A.'
-            p='Simply connect your wallet, and register using the button below!'
-            p
-              button(id='early_supporter_event_register_button' class='btn btn-info')= 'Register wallet'
-              p(id='early_supporter_event_register_message' style='display:none;')
-            p 
-              i
-                b='Note:'
-                =' There is '
-                b='no fee'
-                =' for registration (other than gas fee). Before registering, make sure you are on '
-                b='https://zilwatch.io'
+          ul
+            li='Join us at '
+              a(href='https://zilswap.io/zilo' style='color: var(--cyan);')='https://zilswap.io/zilo'
+            li='Full article: '
+              a(href='http://bit.ly/zilo5-zilwatch' style='color: var(--cyan);')='http://bit.ly/zilo5-zilwatch'
+            li='How to take part: '
+              a(href='http://bit.ly/how2zilo' style='color: var(--cyan);')='http://bit.ly/how2zilo'
+
+          p(class='font-italic')='**Early supporter registration has ended!  Stay tuned for more announcement next month! :D'
+
         hr
 
         div(class='row accordion')
@@ -1606,8 +1596,6 @@ block script
     const nftCollectionStatus = new NftCollectionStatus(nftTokenPropertiesListMap, utilsNft);
     const zilswapArkProfilePicStatus = new ZilswapArkProfilePicStatus();
 
-    const earlySupporterEventStatus = new EarlySupporterEventStatus();
-
     function getRandomInt(max) {
       return Math.floor(Math.random() * max);
     }
@@ -1615,7 +1603,6 @@ block script
     function newBlockListenerCallback(blockchainStatusNotifyType, blockNum, txHashArr) {
       console.log('NewBlock-%s: %s', blockchainStatusNotifyType, blockNum);
 
-      earlySupporterEventStatus.onNewBlockStatusChange(blockNum);
       swapStatus.onNewBlockStatusChange(blockNum, txHashArr);
 
       // Only refresh if the callback is from a websocket, i.e., a notification after the first load.
